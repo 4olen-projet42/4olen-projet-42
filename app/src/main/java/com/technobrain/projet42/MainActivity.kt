@@ -10,6 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.technobrain.projet42.ui.component.LoginForm
+import com.technobrain.projet42.ui.component.LoginViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +22,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                Greeting("Android")
+                LoginFormApp()
             }
         }
     }
@@ -27,14 +30,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
+
+}
+
+@Composable
+fun LoginFormApp() {
+    val loginViewModel: LoginViewModel = viewModel()
+
+    LoginForm(
+        submit = { loginViewModel.submitLogin() }
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    Greeting("Android")
+    LoginFormApp()
 }
