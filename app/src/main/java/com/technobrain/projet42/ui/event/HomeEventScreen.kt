@@ -66,7 +66,8 @@ fun EventScreen(
             ) {
 
                 SearchBar()
-                CarouselScreen()
+                val items = listOf("Page 1", "Page 2", "Page 3")
+                CarouselView(events = events, context = LocalContext.current)
                 Spacer(modifier = Modifier.padding(8.dp))
                 EventsList(events = events)
 
@@ -75,19 +76,6 @@ fun EventScreen(
     )
 }
 
-@Composable
-fun CarouselScreen() {
-    val events = remember {
-        mutableStateListOf(
-            Event("Marathon", "Lun, 03 Juin"),
-            Event("Concert", "Mar, 04 Juin"),
-            Event("Festival", "Mer, 05 Juin"),
-            Event("Exposition", "Jeu, 06 Juin"),
-            Event("Conférence", "Ven, 07 Juin")
-        )
-    }
-    CarouselView(events = events)
-}
 
 
 @Preview(showBackground = true)
