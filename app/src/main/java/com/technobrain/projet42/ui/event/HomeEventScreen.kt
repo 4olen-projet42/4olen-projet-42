@@ -5,48 +5,93 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Red
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.technobrain.projet42.domain.model.EventItem
-import com.technobrain.projet42.ui.component.CarouselComponent
-import com.technobrain.projet42.ui.component.EventCardList
+import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import com.technobrain.projet42.R
+import com.technobrain.projet42.domain.model.Event
+import com.technobrain.projet42.ui.component.CarouselView
+import com.technobrain.projet42.ui.component.EventsList
+import com.technobrain.projet42.ui.component.SearchBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
-    events: List<EventItem>,
-    onItemClick: (String) -> Unit = {},
+fun EventScreen(
+    modifier: Modifier = Modifier.background(Red)
 ) {
-    Column(modifier = Modifier.fillMaxSize().background(color = Color.White).padding(10.dp)) {
-        // Carousel at the top of the screen
-        CarouselComponent(
-            events = events,
-            onItemClick = onItemClick
-        )
-
-        Spacer(modifier = Modifier.size(20.dp))
-
-        // List of events below the carousel
-        EventCardList(
-            events = events,
-            modifier = Modifier,
-            onItemClick = onItemClick
+    val events = remember {
+        mutableStateListOf(
+            Event("Marathon", "Lun, 03 Juin"),
+            Event("Concert", "Mar, 04 Juin"),
+            Event("Festival", "Mer, 05 Juin"),
+            Event("Exposition", "Jeu, 06 Juin"),
+            Event("Conférence", "Ven, 07 Juin")
         )
     }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Home page", fontSize = 18.sp, fontWeight = FontWeight.Bold) },
+                actions = {
+                    IconButton(onClick = { /* Handle profile click */ }) {
+                        Icon(Icons.Filled.Person, contentDescription = "Profile")
+                    }
+
+                }
+            )
+        },
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                SearchBar()
+                CarouselScreen()
+                Spacer(modifier = Modifier.padding(8.dp))
+                EventsList(events = events)
+
+            }
+        }
+    )
 }
 
-@Preview
 @Composable
-fun HomeScreenPreview() {
-    val events = listOf(
-        EventItem(id = "1", title = "Event 1", posterUrl = "https://picsum.photos/200/300", date = "01/01/2022", description = "Description 1", location = "Location 1", nb_participants = 10),
-        EventItem(id = "2", title = "Event 2", posterUrl = "https://picsum.photos/200/300", date = "02/01/2022", description = "Description 2", location = "Location 2", nb_participants = 20),
-        EventItem(id = "3", title = "Event 3", posterUrl = "https://picsum.photos/200/300", date = "03/01/2022", description = "Description 3", location = "Location 3", nb_participants = 30),
-        EventItem(id = "4", title = "Event 4", posterUrl = "https://picsum.photos/200/300", date = "04/01/2022", description = "Description 4", location = "Location 4", nb_participants = 40),
-        EventItem(id = "5", title = "Event 5", posterUrl = "https://picsum.photos/200/300", date = "05/01/2022", description = "Description 5", location = "Location 5", nb_participants = 50),
-    )
-    HomeScreen(events = events)
+fun CarouselScreen() {
+    val events = remember {
+        mutableStateListOf(
+            Event("Marathon", "Lun, 03 Juin"),
+            Event("Concert", "Mar, 04 Juin"),
+            Event("Festival", "Mer, 05 Juin"),
+            Event("Exposition", "Jeu, 06 Juin"),
+            Event("Conférence", "Ven, 07 Juin")
+        )
+    }
+    CarouselView(events = events)
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    EventScreen()
 }
