@@ -36,13 +36,20 @@ import com.technobrain.projet42.ui.component.SearchBar
 fun EventScreen(
     modifier: Modifier = Modifier.background(Red)
 ) {
+    val Carouselevents = remember {
+        mutableStateListOf(
+            Event("Marathon", "Lun, 03 Juin", "Lyon"),
+            Event("Concert", "Mar, 04 Juin", "Lyon"),
+            Event("Festival", "Mer, 05 Juin", "Lyon"),
+        )
+    }
     val events = remember {
         mutableStateListOf(
-            Event("Marathon", "Lun, 03 Juin"),
-            Event("Concert", "Mar, 04 Juin"),
-            Event("Festival", "Mer, 05 Juin"),
-            Event("Exposition", "Jeu, 06 Juin"),
-            Event("Conférence", "Ven, 07 Juin")
+            Event("Marathon", "Lun, 03 Juin", "Lyon"),
+            Event("Concert", "Mar, 04 Juin", "Lyon"),
+            Event("Festival", "Mer, 05 Juin", "Lyon"),
+            Event("Exposition", "Jeu, 06 Juin", "Lyon"),
+            Event("Conférence", "Ven, 07 Juin", "Lyon")
         )
     }
     Scaffold(
@@ -66,8 +73,7 @@ fun EventScreen(
             ) {
 
                 SearchBar()
-                val items = listOf("Page 1", "Page 2", "Page 3")
-                CarouselView(events = events, context = LocalContext.current)
+                CarouselView(events = Carouselevents, context = LocalContext.current)
                 Spacer(modifier = Modifier.padding(8.dp))
                 EventsList(events = events)
 

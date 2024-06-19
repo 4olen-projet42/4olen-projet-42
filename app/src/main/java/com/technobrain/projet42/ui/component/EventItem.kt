@@ -10,12 +10,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,9 +36,8 @@ fun EventItem(event: Event) {
             .clickable { /* Handle event click */ },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            // concat the string to get the image id
-            painter = painterResource( id = R.drawable.ic_launcher_foreground),
+        Image( // change to AsyncImage when available
+            painter = painterResource( id = R.drawable.baseline_run_circle_24),
             contentDescription = event.name,
             modifier = Modifier
                 .size(64.dp)
@@ -42,7 +46,13 @@ fun EventItem(event: Event) {
         Spacer(modifier = Modifier.width(16.dp))
         Column {
             Text(text = event.name, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
-            Text(text = event.date, style = MaterialTheme.typography.bodyMedium)
+            Row (verticalAlignment = Alignment.CenterVertically)
+            {
+                Text(text = event.location, style = MaterialTheme.typography.bodyMedium)
+                Icon(Icons.Filled.LocationOn, contentDescription = "Location", tint = Color.Red, modifier = Modifier.size(16.dp))
+            }
+                Text(text = event.date, style = MaterialTheme.typography.bodyMedium)
+
         }
     }
 }
@@ -52,7 +62,7 @@ fun EventItem(event: Event) {
 fun EventItemPreview() {
     MaterialTheme {
         EventItem(
-            Event("Marathon", "Lun, 03 Juin")
+            Event("Marathon", "Lun, 03 Juin", "Lyon")
         )
     }
 }

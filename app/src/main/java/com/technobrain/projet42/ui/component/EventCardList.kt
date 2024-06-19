@@ -24,11 +24,11 @@ fun EventsList(events: List<Event>) {
 @Composable
 fun EventCardListPreview() {
     val events = listOf(
-        Event("Marathon", "Lun, 03 Juin"),
-        Event("Concert", "Mar, 04 Juin"),
-        Event("Festival", "Mer, 05 Juin"),
-        Event("Exposition", "Jeu, 06 Juin"),
-        Event("Conférence", "Ven, 07 Juin"),
+        Event("Marathon", "Lun, 03 Juin", "Lyon"),
+        Event("Concert", "Mar, 04 Juin", "Lyon"),
+        Event("Festival", "Mer, 05 Juin", "Lyon"),
+        Event("Exposition", "Jeu, 06 Juin", "Lyon"),
+        Event("Conférence", "Ven, 07 Juin", "Lyon"),
     )
     EventsList(events)
 }

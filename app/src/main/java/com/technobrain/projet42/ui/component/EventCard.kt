@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,11 +25,13 @@ import com.technobrain.projet42.domain.model.Event
 @Composable
 fun EventCard(event: Event) {
     Box(modifier = Modifier.fillMaxWidth()) {
-        Image(
+        Image( // change to AsyncImage when available
             painter = painterResource(id = R.drawable.ic_launcher_foreground), // Remplacer `background_image` par votre ressource
             contentDescription = "Background",
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth().size(200.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(200.dp)
         )
         Column(
             modifier = Modifier
@@ -38,7 +41,11 @@ fun EventCard(event: Event) {
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = event.name, color = Color.White, style = MaterialTheme.typography.bodyMedium)
+            Row {
+                Text(text = event.name, color = Color.White, style = MaterialTheme.typography.bodyMedium)
+                Text(text = ", ", color = Color.White, style = MaterialTheme.typography.bodyMedium)
+                Text(text = event.location, color = Color.White, style = MaterialTheme.typography.bodyMedium)
+            }
             Text(text = event.date, color = Color.White, style = MaterialTheme.typography.bodyMedium)
         }
     }
@@ -47,5 +54,5 @@ fun EventCard(event: Event) {
 @Preview
 @Composable
 fun EventCardPreview() {
-    EventCard(Event("Marathon", "Lun, 03 Juin"))
+    EventCard(Event("Marathon", "Lun, 03 Juin", "Lyon"))
 }
