@@ -24,6 +24,8 @@ import com.technobrain.projet42.ui.component.UserInfo
 import com.technobrain.projet42.ui.component.UserListEvent
 import com.technobrain.projet42.domain.model.UserShort
 import com.technobrain.projet42.domain.model.EventShort
+import com.technobrain.projet42.ui.component.EventCardListPreview
+import com.technobrain.projet42.ui.component.EventsList
 
 @Composable
 fun UserAccountScreen(
@@ -97,7 +99,7 @@ fun UserAccountScreen(
             Box(modifier = modifier.fillMaxSize()) {
                 when (selectedTab) {
                     0 -> UserInfo(user)
-                    1 -> UserListEvent(events)
+                    1 -> EventsList(events)
                 }
             }
         }
@@ -118,18 +120,21 @@ fun UserAccountPreview() {
         val events = listOf(
             EventShort(
                 id = "1",
-                nom = "Evenement 1",
-                date = "Lundi 01 janvier"
+                name = "Evenement 1",
+                date = "Lundi 01 janvier",
+                location = "Lyon"
             ),
             EventShort(
                 id = "2",
-                nom = "Evenement 2",
-                date = "Lundi 02 janvier"
+                name = "Evenement 2",
+                date = "Lundi 02 janvier",
+                location = "Lyon"
             ),
             EventShort(
                 id = "3",
-                nom = "Evenement 3",
-                date = "Lundi 03 janvier"
+                name = "Evenement 3",
+                date = "Lundi 03 janvier",
+                location = "Lyon"
             )
         )
         UserAccountScreen(user, events)

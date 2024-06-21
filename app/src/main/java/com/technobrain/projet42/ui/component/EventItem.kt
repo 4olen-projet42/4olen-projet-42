@@ -27,8 +27,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.technobrain.projet42.R
 import com.technobrain.projet42.domain.model.Event
+import com.technobrain.projet42.domain.model.EventShort
+
 @Composable
-fun EventItem(event: Event) {
+fun EventItem(event: EventShort) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -62,7 +64,7 @@ fun EventItem(event: Event) {
 fun EventItemPreview() {
     MaterialTheme {
         EventItem(
-            Event("Marathon", "Lun, 03 Juin", "Lyon")
+            EventShort("1","Marathon", "Lun, 03 Juin", "Lyon")
         )
     }
 }
