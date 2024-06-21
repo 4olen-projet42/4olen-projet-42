@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Surface(
                 modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.background
             ) {
                 EventScreen()
             }
