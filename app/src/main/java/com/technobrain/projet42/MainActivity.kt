@@ -1,5 +1,6 @@
 package com.technobrain.projet42
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,8 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.technobrain.projet42.ui.component.LoginForm
 import com.technobrain.projet42.ui.component.LoginViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.technobrain.projet42.ui.component.LoginViewModelFactory
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var loginViewModelFactory: LoginViewModelFactory
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,28 +26,18 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                LoginFormApp()
+                LoginFormApp(applicationContext)
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-
-}
-
-@Composable
-fun LoginFormApp() {
-    val loginViewModel: LoginViewModel = viewModel()
+fun LoginFormApp(context: Context) {
+    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(context))
 
     LoginForm(
         submit = { loginViewModel.submitLogin() }
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LoginFormApp()
-}
