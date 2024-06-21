@@ -47,18 +47,21 @@ fun UserListEventPreview() {
         val events = listOf(
             EventShort(
                 id = "1",
-                nom = "Evenement 1",
-                date = "Lundi 01 janvier"
+                name = "Evenement 1",
+                date = "Lundi 01 janvier",
+                location = "Lyon"
             ),
             EventShort(
                 id = "2",
-                nom = "Evenement 2",
-                date = "Lundi 02 janvier"
+                name = "Evenement 2",
+                date = "Lundi 02 janvier",
+                location = "Lyon"
             ),
             EventShort(
                 id = "3",
-                nom = "Evenement 3",
-                date = "Lundi 03 janvier"
+                name = "Evenement 3",
+                date = "Lundi 03 janvier",
+                location = "Lyon"
             )
         )
         UserListEvent(events)

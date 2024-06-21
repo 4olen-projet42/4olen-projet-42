@@ -2,13 +2,11 @@ package com.technobrain.projet42.ui.component
 
 import android.content.Context
 import android.view.ViewGroup
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.RecyclerView
-import com.technobrain.projet42.domain.model.Event
+import com.technobrain.projet42.domain.model.EventShort
 
-class EventPagerAdapter(private val events: List<Event>, private val context: Context) : RecyclerView.Adapter<EventPagerAdapter.EventViewHolder>() {
+class EventPagerAdapter(private val events: List<EventShort>, private val context: Context) : RecyclerView.Adapter<EventPagerAdapter.EventViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val composeView = ComposeView(context).apply {

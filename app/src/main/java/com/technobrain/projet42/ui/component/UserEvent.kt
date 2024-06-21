@@ -37,7 +37,7 @@ fun UserEvent(
             Spacer(modifier = modifier.size(10.dp))
             Column {
                 Text(
-                    text = eventShort.nom,
+                    text = eventShort.name,
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                 )
                 Spacer(modifier.size(10.dp))
@@ -56,8 +56,9 @@ fun UserEventPreview() {
     MaterialTheme {
         val event = EventShort(
             id = "1",
-            nom = "Evenement",
-            date = "Lundi 01 janvier"
+            name = "Evenement 1",
+            date = "Lundi 01 janvier",
+            location = "Lyon"
         )
         UserEvent(event)
     }

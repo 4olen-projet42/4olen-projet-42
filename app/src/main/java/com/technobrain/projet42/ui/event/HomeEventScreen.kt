@@ -24,9 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
-import com.technobrain.projet42.R
-import com.technobrain.projet42.domain.model.Event
+import androidx.navigation.NavHostController
+import com.technobrain.projet42.domain.model.EventShort
 import com.technobrain.projet42.ui.component.CarouselView
 import com.technobrain.projet42.ui.component.EventsList
 import com.technobrain.projet42.ui.component.SearchBar
@@ -34,22 +33,24 @@ import com.technobrain.projet42.ui.component.SearchBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventScreen(
-    modifier: Modifier = Modifier.background(Red)
+    navController: NavHostController,
+    modifier: Modifier = Modifier.background(Red),
+    onItemClick: (userId: String) -> Unit = {}
 ) {
     val Carouselevents = remember {
         mutableStateListOf(
-            Event("Marathon", "Lun, 03 Juin", "Lyon"),
-            Event("Concert", "Mar, 04 Juin", "Lyon"),
-            Event("Festival", "Mer, 05 Juin", "Lyon"),
+            EventShort("1","Marathon", "Lun, 03 Juin", "Lyon"),
+            EventShort("2","Concert", "Mar, 04 Juin", "Lyon"),
+            EventShort("3","Festival", "Mer, 05 Juin", "Lyon"),
         )
     }
     val events = remember {
         mutableStateListOf(
-            Event("Marathon", "Lun, 03 Juin", "Lyon"),
-            Event("Concert", "Mar, 04 Juin", "Lyon"),
-            Event("Festival", "Mer, 05 Juin", "Lyon"),
-            Event("Exposition", "Jeu, 06 Juin", "Lyon"),
-            Event("Conférence", "Ven, 07 Juin", "Lyon")
+            EventShort("1","Marathon", "Lun, 03 Juin", "Lyon"),
+            EventShort("2","Concert", "Mar, 04 Juin", "Lyon"),
+            EventShort("3","Festival", "Mer, 05 Juin", "Lyon"),
+            EventShort("4","Exposition", "Jeu, 06 Juin", "Lyon"),
+            EventShort("5","Conférence", "Ven, 07 Juin", "Lyon")
         )
     }
     Scaffold(
@@ -57,7 +58,9 @@ fun EventScreen(
             TopAppBar(
                 title = { Text("Home page", fontSize = 18.sp, fontWeight = FontWeight.Bold) },
                 actions = {
-                    IconButton(onClick = { /* Handle profile click */ }) {
+                    IconButton(
+                        onClick = { navController.navigate("userAccountPage") }
+                    ) {
                         Icon(Icons.Filled.Person, contentDescription = "Profile")
                     }
 
@@ -87,5 +90,5 @@ fun EventScreen(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    EventScreen()
+    EventScreen(navController = NavHostController(LocalContext.current))
 }
