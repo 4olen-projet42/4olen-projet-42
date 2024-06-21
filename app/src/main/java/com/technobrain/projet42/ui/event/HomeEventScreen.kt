@@ -35,7 +35,6 @@ import com.technobrain.projet42.ui.component.SearchBar
 fun EventScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier.background(Red),
-    onItemClick: (userId: String) -> Unit = {}
 ) {
     val Carouselevents = remember {
         mutableStateListOf(
