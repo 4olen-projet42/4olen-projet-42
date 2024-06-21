@@ -9,10 +9,11 @@ import com.technobrain.projet42.data.KeycloakRepository
 import com.technobrain.projet42.domain.repositories.LoginRepository
 import kotlinx.coroutines.launch
 import kotlin.math.log
+import android.content.Context
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(context: Context) : ViewModel() {
 
-    private val loginRepository: LoginRepository = KeycloakRepository()
+    private val loginRepository: LoginRepository = KeycloakRepository(context)
 
     var username: String = ""
     var password: String = ""
@@ -31,9 +32,14 @@ class LoginViewModel : ViewModel() {
                 val message = loginRepository.login(username, password)
                 Log.d("LoginViewModel", message)
 
+                val storedToken = loginRepository.getAccessToken()
+                println("Stored Access Token: $storedToken")
+
             } catch (e: Exception) {
                 Log.e("LoginViewModel", "Error logging in", e)
             }
         }
+
+
     }
 }
