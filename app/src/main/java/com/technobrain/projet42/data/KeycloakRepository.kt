@@ -12,6 +12,7 @@ import java.util.Objects
 
 
 private const val BASE_URL = "http://192.168.1.30:8090/"
+
 private const val CLIENT_ID = "projet42-api"
 private const val CLIENT_SECRET = "eGWtjjG0tOWD5mqoaUp1onBgFNzNBIfT"
 
@@ -56,6 +57,7 @@ class KeycloakRepository(context: Context) : LoginRepository {
             }
         } catch (e: Exception) {
             Result.failure(e)
+
         }
     }
 

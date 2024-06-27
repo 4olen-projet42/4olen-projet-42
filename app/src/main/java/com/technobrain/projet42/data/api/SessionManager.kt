@@ -9,12 +9,14 @@ class SessionManager(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences("session", Context.MODE_PRIVATE)
     private val editor = prefs.edit()
 
+
     companion object {
         private const val ACCESS_TOKEN = "access_token"
     }
 
     fun saveAccessToken(token: String) {
         editor.putString(ACCESS_TOKEN, token).apply()
+
     }
 
     fun fetchAccessToken(): String? {
@@ -36,4 +38,5 @@ class SessionManager(context: Context) {
         clearAccessToken()
         return token != null && !isTokenExpired(token)
     }
+
 }

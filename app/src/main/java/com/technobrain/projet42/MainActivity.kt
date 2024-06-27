@@ -30,8 +30,10 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
+
                 val sessionManager = SessionManager(this)
                 AppNavigator(sessionManager)
+
             }
         }
     }
@@ -39,9 +41,8 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
+
 fun AppNavigator(sessionManager: SessionManager) {
-
-
     val events = listOf(
         EventShort("1","Marathon", "Lun, 03 Juin", "Lyon"),
         EventShort("2","Concert", "Mar, 04 Juin", "Lyon"),
@@ -58,3 +59,4 @@ fun AppNavigator(sessionManager: SessionManager) {
         composable("LoginForm") { LoginForm(navController) }
     }
 }
+
