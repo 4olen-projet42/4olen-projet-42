@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.domain.model.EventShort
 import com.technobrain.projet42.ui.component.CarouselView
 import com.technobrain.projet42.ui.component.EventsList
@@ -34,7 +35,10 @@ import com.technobrain.projet42.ui.component.SearchBar
 @Composable
 fun EventScreen(
     navController: NavHostController,
+    sessionManager: SessionManager,
     modifier: Modifier = Modifier.background(Red),
+
+
 ) {
     val Carouselevents = remember {
         mutableStateListOf(
@@ -58,7 +62,15 @@ fun EventScreen(
                 title = { Text("Home page", fontSize = 18.sp, fontWeight = FontWeight.Bold) },
                 actions = {
                     IconButton(
-                        onClick = { navController.navigate("userAccountPage") }
+                        onClick =
+                        {
+                            if (sessionManager.isUserLoggedIn()) {
+                                navController.navigate("userAccountPage")
+                            } else {
+                                navController.navigate("loginForm")
+                            }
+                        }
+
                     ) {
                         Icon(Icons.Filled.Person, contentDescription = "Profile")
                     }
@@ -89,5 +101,6 @@ fun EventScreen(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    EventScreen(navController = NavHostController(LocalContext.current))
+    EventScreen(navController = NavHostController(LocalContext.current), sessionManager = SessionManager(LocalContext.current))
+
 }
