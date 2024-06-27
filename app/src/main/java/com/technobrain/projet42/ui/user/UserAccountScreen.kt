@@ -3,6 +3,7 @@ package com.technobrain.projet42.ui.user
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,24 +16,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.technobrain.projet42.R
+import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.ui.component.UserInfo
-import com.technobrain.projet42.ui.component.UserListEvent
 import com.technobrain.projet42.domain.model.UserShort
 import com.technobrain.projet42.domain.model.EventShort
-import com.technobrain.projet42.ui.component.EventCardListPreview
 import com.technobrain.projet42.ui.component.EventsList
 
 @Composable
 fun UserAccountScreen(
     user: UserShort,
     events: List<EventShort>,
+    navController: NavHostController,
+    sessionManager: SessionManager,
     modifier: Modifier = Modifier,
-    onLogout: () -> Unit = {}
 ) {
     var selectedTab by remember { mutableStateOf(0) }
     Column(modifier = modifier.fillMaxSize()) {
@@ -41,12 +44,24 @@ fun UserAccountScreen(
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
+            IconButton(
+                onClick = { navController.navigate("eventScreen") },
+                modifier = modifier.align(Alignment.TopStart)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Retour"
+                )
+            }
             Text(
                 "Profil",
                 style = MaterialTheme.typography.titleLarge
             )
             IconButton(
-                onClick = onLogout,
+                onClick = {
+                    sessionManager.clearAccessToken()
+                    navController.navigate("loginForm")
+                },
                 modifier = modifier.align(Alignment.TopEnd)
             ) {
                 Icon(
@@ -137,6 +152,11 @@ fun UserAccountPreview() {
                 location = "Lyon"
             )
         )
-        UserAccountScreen(user, events)
+        UserAccountScreen(
+            user,
+            events,
+            navController = NavHostController(LocalContext.current),
+            sessionManager = SessionManager(LocalContext.current)
+        )
     }
 }
