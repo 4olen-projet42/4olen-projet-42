@@ -1,4 +1,4 @@
-package com.technobrain.projet42.ui.login
+package com.technobrain.projet42.ui.register
 
 import android.app.Application
 import android.util.Log
@@ -12,51 +12,32 @@ import kotlinx.coroutines.launch
 import kotlin.math.log
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
+import com.technobrain.projet42.ui.register.RegisterState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class LoginViewModel(application: Application) : AndroidViewModel(application) {
-
+class RegisterViewModel (application: Application) : AndroidViewModel(application) {
     private val loginRepository: LoginRepository = KeycloakRepository(application)
 
-    private val _uiState = MutableStateFlow<LoginState>(LoginState.Empty)
-    val uiState: StateFlow<LoginState> get() = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<RegisterState>(RegisterState.Empty)
+    val uiState: StateFlow<RegisterState> get() = _uiState.asStateFlow()
 
-
-    fun submitLogin(username: String, password: String) {
-
-        viewModelScope.launch {
-            _uiState.update {
-                LoginState.Loading
-            }
-
-            loginRepository.login(username, password).onSuccess { token ->
-                _uiState.update {
-                    LoginState.Loaded(token)
-                }
-            }.onFailure { error ->
-                _uiState.update {
-                    LoginState.Error(error.message ?: "An error occurred")
-                }
-            }
-        }
-    }
 
     fun submitRegister(username: String, password: String, email: String, firstName: String, lastName: String) {
         viewModelScope.launch {
             _uiState.update {
-                LoginState.Loading
+                RegisterState.Loading
             }
 
-            loginRepository.register(username, password, email, firstName, lastName).onSuccess { token ->
+            loginRepository.register(username, password, email, firstName, lastName).onSuccess {
                 _uiState.update {
-                    LoginState.Loaded(token)
+                    RegisterState.Loaded("Inscription réussie")
                 }
             }.onFailure { error ->
                 _uiState.update {
-                    LoginState.Error(error.message ?: "An error occurred")
+                    RegisterState.Error(error.message ?: "An error occurred")
                 }
             }
         }
