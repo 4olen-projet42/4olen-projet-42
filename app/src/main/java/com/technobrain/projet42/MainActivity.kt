@@ -16,6 +16,7 @@ import com.technobrain.projet42.domain.model.EventShort
 import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.ui.login.LoginForm
 import com.technobrain.projet42.ui.event.EventScreen
+import com.technobrain.projet42.ui.register.RegisterScreen
 import com.technobrain.projet42.ui.user.UserAccountScreen
 
 
@@ -61,6 +62,7 @@ fun AppNavigator(sessionManager: SessionManager) {
             sessionManager
         ) }
         composable("LoginForm") { LoginForm(navController) }
+        composable("registerScreen") { RegisterScreen(navController) }
     }
 }
 
