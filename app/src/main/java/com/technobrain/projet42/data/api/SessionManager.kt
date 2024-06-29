@@ -35,7 +35,6 @@ class SessionManager(context: Context) {
 
     fun isUserLoggedIn(): Boolean {
         val token = fetchAccessToken()
-        clearAccessToken()
         return token != null && !isTokenExpired(token)
     }
 
