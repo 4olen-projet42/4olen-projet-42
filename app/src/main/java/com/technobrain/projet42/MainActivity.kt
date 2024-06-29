@@ -28,8 +28,10 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
+
                 val sessionManager = SessionManager(this)
                 AppNavigator(sessionManager)
+
             }
         }
     }
@@ -61,3 +63,4 @@ fun AppNavigator(sessionManager: SessionManager) {
         composable("LoginForm") { LoginForm(navController) }
     }
 }
+

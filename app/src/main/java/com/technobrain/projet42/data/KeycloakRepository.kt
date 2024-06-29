@@ -11,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Objects
 
 
+
 private const val BASE_URL = "http://172.20.10.10:8090/" //A CHANGER EN FONCTION DE SON ENV
 private const val CLIENT_ID = "projet42-api"
 private const val CLIENT_SECRET = "R4vN42or8rBlsVbS4TMRsaUtOZQTvbSG" //A CHANGER EN FONCTION DE SON ENV
@@ -56,6 +57,7 @@ class KeycloakRepository(context: Context) : LoginRepository {
             }
         } catch (e: Exception) {
             Result.failure(e)
+
         }
     }
 

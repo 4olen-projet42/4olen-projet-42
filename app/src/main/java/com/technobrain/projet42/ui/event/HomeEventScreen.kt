@@ -38,6 +38,7 @@ fun EventScreen(
     sessionManager: SessionManager,
     modifier: Modifier = Modifier.background(Red),
 
+
 ) {
     val Carouselevents = remember {
         mutableStateListOf(
@@ -69,6 +70,7 @@ fun EventScreen(
                                 navController.navigate("loginForm")
                             }
                         }
+
                     ) {
                         Icon(Icons.Filled.Person, contentDescription = "Profile")
                     }
@@ -100,4 +102,5 @@ fun EventScreen(
 @Composable
 fun DefaultPreview() {
     EventScreen(navController = NavHostController(LocalContext.current), sessionManager = SessionManager(LocalContext.current))
+
 }
