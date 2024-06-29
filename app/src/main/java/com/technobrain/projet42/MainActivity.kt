@@ -1,6 +1,5 @@
 package com.technobrain.projet42
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,9 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.domain.model.EventShort
-import com.technobrain.projet42.domain.model.UserShort
+import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.ui.login.LoginForm
-import com.technobrain.projet42.ui.login.LoginViewModel
 import com.technobrain.projet42.ui.event.EventScreen
 import com.technobrain.projet42.ui.register.RegisterScreen
 import com.technobrain.projet42.ui.user.UserAccountScreen
@@ -31,8 +29,10 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
+
                 val sessionManager = SessionManager(this)
                 AppNavigator(sessionManager)
+
             }
         }
     }
@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AppNavigator(sessionManager: SessionManager) {
-
 
     val events = listOf(
         EventShort("1","Marathon", "Lun, 03 Juin", "Lyon"),
@@ -55,8 +54,15 @@ fun AppNavigator(sessionManager: SessionManager) {
 
     NavHost(navController, startDestination = "eventScreen") {
         composable("eventScreen") { EventScreen(navController, sessionManager) }
-        composable("userAccountPage") { UserAccountScreen(user = UserShort("1", "Doe", "John", "jdoe@mail.com","https://avatars.githubusercontent.com/u/117664928?v=4"), events = events) }
+        composable("userAccountPage") { UserAccountScreen(
+            "test",
+            StatShort(42.0, 42.5, 42, 35.3),
+            events,
+            navController,
+            sessionManager
+        ) }
         composable("LoginForm") { LoginForm(navController) }
         composable("registerScreen") { RegisterScreen(navController) }
     }
 }
+
