@@ -22,21 +22,6 @@ interface KeycloakAPI {
         @Field("client_secret") clientSecret: String
     ): Response<TokenResponse>
 
-    @FormUrlEncoded
-    @POST("/realms/projet42/protocol/openid-connect/token")
-    suspend fun tokenAdmin(
-        @Field("client_id") clientId: String,
-        @Field("client_secret") clientSecret: String,
-        @Field("grant_type") grantType: String
-    ): Response<TokenResponse>
-
-
-    //@POST("/admin/realms/projet42/users")
-    //suspend fun register(
-    //    @Header("Authorization") token: String,
-    //    @Body user: KeycloakUser
-    //): Response<TokenResponse>
-
     @POST("/admin/realms/projet42/users")
     suspend fun register(
         @Header("Authorization") token: String,

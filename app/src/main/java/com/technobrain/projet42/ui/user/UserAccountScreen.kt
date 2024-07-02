@@ -155,7 +155,7 @@ fun UserAccountScreen(
                     Spacer(modifier = modifier.size(10.dp))
                     Box(modifier = modifier.fillMaxSize()) {
                         when (selectedTab) {
-                            0 -> UserInfo(user, stat)
+                            0 -> UserInfo(navController, user, stat)
                             1 -> EventsList(events)
                         }
                     }
