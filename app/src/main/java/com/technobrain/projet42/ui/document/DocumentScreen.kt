@@ -88,7 +88,9 @@ fun DocumentScreen(
             }
             is DocumentState.Loaded -> {
                 items(state.documents) { document ->
-                    DocumentItem(document)
+                    DocumentItem(document, viewModel){
+                        refreshTrigger.value++
+                    }
                     HorizontalDivider(
                         thickness = 10.dp,
                         color = Color.Transparent

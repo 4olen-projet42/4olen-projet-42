@@ -12,4 +12,6 @@ interface ApiRepository {
 
     suspend fun getDocuments(): Result<List<DocumentShort>>
 
+    suspend fun deleteDocument(documentId: String): Result<String>
+
 }

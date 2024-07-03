@@ -5,11 +5,13 @@ import com.technobrain.projet42.data.api.model.UserResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface Projet42API {
 
@@ -29,5 +31,11 @@ interface Projet42API {
     suspend fun getDocuments(
         @Header("Authorization") token: String,
     ): Response<List<DocumentResponse>>
+
+    @DELETE("/api/documents/delete/{id}")
+    suspend fun deleteDocument(
+        @Header("Authorization") token: String,
+        @Path("id") documentId: String
+    ): Response<ResponseBody>
 
 }

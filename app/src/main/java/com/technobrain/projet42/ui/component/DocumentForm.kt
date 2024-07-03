@@ -26,7 +26,7 @@ import java.io.InputStream
 
 
 @Composable
-fun DocumentForm(context: Context, viewModel: DocumentViewModel, onDocumentAdded: () -> Unit) {
+fun DocumentForm(context: Context, viewModel: DocumentViewModel, onDocumentReload: () -> Unit) {
     val documentPath = remember { mutableStateOf("") }
     val documentName = remember { mutableStateOf("") }
 
@@ -51,7 +51,7 @@ fun DocumentForm(context: Context, viewModel: DocumentViewModel, onDocumentAdded
 
         val documentFile = DocumentFile.fromSingleUri(context, uri)
         documentName.value = documentFile?.name ?: "Unknown"
-        onDocumentAdded()
+        onDocumentReload()
     }
 
     Column(

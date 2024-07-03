@@ -42,4 +42,10 @@ class DocumentViewModel (application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    fun deleteDocument(documentId: String) {
+        viewModelScope.launch {
+            apiRepository.deleteDocument(documentId)
+        }
+    }
+
 }

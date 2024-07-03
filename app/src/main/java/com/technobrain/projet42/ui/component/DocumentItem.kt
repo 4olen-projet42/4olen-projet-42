@@ -25,11 +25,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.technobrain.projet42.R
 import com.technobrain.projet42.domain.model.DocumentShort
+import com.technobrain.projet42.ui.document.DocumentViewModel
 
 @Composable
-fun DocumentItem(document: DocumentShort) {
+fun DocumentItem(document: DocumentShort, viewModel: DocumentViewModel, onDocumentReload: () -> Unit) {
 
     Card(
         modifier = Modifier
@@ -41,7 +43,8 @@ fun DocumentItem(document: DocumentShort) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
                     .padding(5.dp)
             ) {
                 Text(
@@ -59,6 +62,8 @@ fun DocumentItem(document: DocumentShort) {
                     .clip(CircleShape)
                     .clickable {
                         /* mettre le delete */
+                        viewModel.deleteDocument(document.id)
+                        onDocumentReload()
                     },
                 colorFilter = ColorFilter.tint(Color.Red)
             )
@@ -66,13 +71,13 @@ fun DocumentItem(document: DocumentShort) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DocumentItemPreview() {
-    DocumentItem(
-        DocumentShort(
-            id = "1",
-            name = "Document 1"
-        )
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DocumentItemPreview() {
+//    DocumentItem(
+//        DocumentShort(
+//            id = "1",
+//            name = "Document 1"
+//        )
+//    )
+//}

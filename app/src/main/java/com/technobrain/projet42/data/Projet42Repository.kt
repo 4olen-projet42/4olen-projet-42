@@ -103,6 +103,28 @@ class Projet42Repository(context:Context): ApiRepository {
             Result.failure(e)
         }
     }
+
+    override suspend fun deleteDocument(documentId: String): Result<String> {
+        return try {
+            val response = api.deleteDocument(
+                token = "Bearer " + sessionManager.fetchAccessToken(),
+                documentId = documentId
+            )
+            if (response.isSuccessful) {
+                Result.success("success")
+            } else {
+                Result.failure(
+                    Exception(
+                        "Failed to delete document: ${
+                            response.errorBody()?.string()
+                        }"
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }
 
 private fun UserResponse.toUserShort() =
