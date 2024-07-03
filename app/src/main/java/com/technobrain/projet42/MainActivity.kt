@@ -1,5 +1,6 @@
 package com.technobrain.projet42
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.domain.model.StatShort
+import com.technobrain.projet42.ui.document.DocumentScreen
 import com.technobrain.projet42.ui.login.LoginForm
 import com.technobrain.projet42.ui.event.EventScreen
 import com.technobrain.projet42.ui.register.RegisterScreen
@@ -29,8 +31,7 @@ class MainActivity : ComponentActivity() {
                 color = MaterialTheme.colorScheme.background
             ) {
 
-                val sessionManager = SessionManager(this)
-                AppNavigator(sessionManager)
+                AppNavigator(this)
 
             }
         }
@@ -39,7 +40,9 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun AppNavigator(sessionManager: SessionManager) {
+fun AppNavigator(context: Context) {
+    val sessionManager = SessionManager(context)
+
     val navController = rememberNavController()
 
     NavHost(navController, startDestination = "eventScreen") {
@@ -51,6 +54,7 @@ fun AppNavigator(sessionManager: SessionManager) {
         ) }
         composable("LoginForm") { LoginForm(navController) }
         composable("registerScreen") { RegisterScreen(navController) }
+        composable("documentScreen") { DocumentScreen(navController, context) }
     }
 }
 

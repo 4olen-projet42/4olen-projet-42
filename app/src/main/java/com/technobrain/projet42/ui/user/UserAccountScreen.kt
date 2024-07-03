@@ -155,7 +155,7 @@ fun UserAccountScreen(
                         .background( Color.White )
                     ) {
                         when (selectedTab) {
-                            0 -> UserInfo(user, stat)
+                            0 -> UserInfo(navController, user, stat)
                             1 -> UserListEvent(events)
                         }
                     }
