@@ -8,13 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.technobrain.projet42.domain.model.EventShort
 
 @Composable
-fun EventsList(events: List<EventShort>) {
+fun EventsList(events: List<EventShort>, navController: NavHostController) {
     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
         items(events) { event ->
-            EventItem(event)
+            EventItem(event, navController)
         }
     }
 }
@@ -30,5 +31,5 @@ fun EventCardListPreview() {
         EventShort("4","Exposition", "Jeu, 06 Juin", "Lyon", "40 km"),
         EventShort("5","Conférence", "Ven, 07 Juin", "Lyon", "50 km")
     )
-    EventsList(events)
+    // EventsList(events)
 }
