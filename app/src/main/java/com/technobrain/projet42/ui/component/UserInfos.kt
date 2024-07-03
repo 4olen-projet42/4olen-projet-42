@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,57 +33,86 @@ fun UserInfo(
             modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
-            Spacer(modifier = modifier.size(10.dp))
+            Spacer(modifier.size(10.dp))
             Text(
-                text = "Email : " + userShort.mail,
+                text = "Email : ",
                 style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold
             )
+            Text(
+                text = userShort.mail,
+                style = MaterialTheme.typography.headlineSmall
+            )
         }
-        Spacer(modifier.size(10.dp))
+        HorizontalDivider(
+            thickness = 10.dp,
+            color = Color.Transparent
+        )
         Row(
             modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
             Spacer(modifier = modifier.size(10.dp))
             Text(
-                text = "Distance totale : " + statShort.distanceTotale + " km",
+                text = "Distance totale : ",
                 style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold
             )
+            Text(
+                text = statShort.distanceTotale.toString() + " km",
+                style = MaterialTheme.typography.headlineSmall
+            )
         }
-        Spacer(modifier.size(10.dp))
+        HorizontalDivider(
+            thickness = 10.dp,
+            color = Color.Transparent
+        )
         Row(
             modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
             Spacer(modifier = modifier.size(10.dp))
             Text(
-                text = "Temps total : " + statShort.tempsTotal + " h",
-                modifier = modifier.fillMaxWidth(),
+                text = "Temps total : ",
                 style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold
             )
+            Text(
+                text = statShort.tempsTotal.toString() + " h",
+                style = MaterialTheme.typography.headlineSmall
+            )
         }
-        Spacer(modifier.size(10.dp))
+        HorizontalDivider(
+            thickness = 10.dp,
+            color = Color.Transparent
+        )
         Row(
             modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
             Spacer(modifier = modifier.size(10.dp))
             Text(
-                text = "Nombre de participation : " + statShort.nbParticipation,
-                modifier = modifier.fillMaxWidth(),
+                text = "Nombre de participation : ",
                 style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold
             )
+            Text(
+                text = statShort.nbParticipation.toString(),
+                style = MaterialTheme.typography.headlineSmall
+            )
         }
-        Spacer(modifier.size(10.dp))
+        HorizontalDivider(
+            thickness = 10.dp,
+            color = Color.Transparent
+        )
         Row(
             modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
             Spacer(modifier = modifier.size(10.dp))
             Text(
-                text = "Classement moyen : " + statShort.classementMoyen,
-                modifier = modifier.fillMaxWidth(),
+                text = "Classement moyen : ",
                 style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = statShort.classementMoyen.toString(),
+                style = MaterialTheme.typography.headlineSmall
             )
         }
     }

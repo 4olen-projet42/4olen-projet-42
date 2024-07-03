@@ -28,8 +28,8 @@ fun UserListEvent(
             state = listState
         ) {
             itemsIndexed(events) { _, item ->
-                UserEvent(
-                    eventShort = item
+                EventItem(
+                    event = item
                 )
                 HorizontalDivider(
                     thickness = 10.dp,
@@ -37,33 +37,5 @@ fun UserListEvent(
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun UserListEventPreview() {
-    MaterialTheme {
-        val events = listOf(
-            EventShort(
-                id = "1",
-                name = "Evenement 1",
-                date = "Lundi 01 janvier",
-                location = "Lyon"
-            ),
-            EventShort(
-                id = "2",
-                name = "Evenement 2",
-                date = "Lundi 02 janvier",
-                location = "Lyon"
-            ),
-            EventShort(
-                id = "3",
-                name = "Evenement 3",
-                date = "Lundi 03 janvier",
-                location = "Lyon"
-            )
-        )
-        UserListEvent(events)
     }
 }

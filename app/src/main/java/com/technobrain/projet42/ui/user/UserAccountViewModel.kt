@@ -25,8 +25,10 @@ class UserAccountViewModel (application: Application) : AndroidViewModel(applica
                 UserAccountState.Loading
             }
             userRepository.getUserInfos().onSuccess { user ->
-                _uiState.update {
-                    UserAccountState.Loaded(user)
+                userRepository.getUserEvents().onSuccess { events ->
+                    _uiState.update {
+                        UserAccountState.Loaded(user, events)
+                    }
                 }
             }.onFailure { error ->
                 _uiState.update {
