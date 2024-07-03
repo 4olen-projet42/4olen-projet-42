@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.technobrain.projet42.R
-import com.technobrain.projet42.domain.model.Event
 import com.technobrain.projet42.domain.model.EventShort
 
 @Composable
@@ -64,7 +62,7 @@ fun EventItem(event: EventShort) {
 fun EventItemPreview() {
     MaterialTheme {
         EventItem(
-            EventShort("1","Marathon", "Lun, 03 Juin", "Lyon")
+            EventShort("1","Marathon", "Lun, 03 Juin", "Lyon", "10 km")
         )
     }
 }
