@@ -19,7 +19,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.technobrain.projet42.R
-import com.technobrain.projet42.domain.model.Event
 import com.technobrain.projet42.domain.model.EventShort
 
 @Composable
@@ -59,7 +58,8 @@ fun EventCardPreview() {
             id = "1",
             name = "Evenement 1",
             date = "Lundi 01 janvier",
-            location = "Lyon"
+            location = "Lyon",
+            distance = "10 km"
         )
     )
 }

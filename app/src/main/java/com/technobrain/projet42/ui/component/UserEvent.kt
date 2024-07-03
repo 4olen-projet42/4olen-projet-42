@@ -58,7 +58,8 @@ fun UserEventPreview() {
             id = "1",
             name = "Evenement 1",
             date = "Lundi 01 janvier",
-            location = "Lyon"
+            location = "Lyon",
+            distance = "10 km"
         )
         UserEvent(event)
     }

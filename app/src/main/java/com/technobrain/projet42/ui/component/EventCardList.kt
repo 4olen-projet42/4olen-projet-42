@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.technobrain.projet42.domain.model.Event
 import com.technobrain.projet42.domain.model.EventShort
 
 @Composable
@@ -25,11 +24,11 @@ fun EventsList(events: List<EventShort>) {
 @Composable
 fun EventCardListPreview() {
     val events = listOf(
-        EventShort("1","Marathon", "Lun, 03 Juin", "Lyon"),
-        EventShort("2","Concert", "Mar, 04 Juin", "Lyon"),
-        EventShort("3","Festival", "Mer, 05 Juin", "Lyon"),
-        EventShort("4","Exposition", "Jeu, 06 Juin", "Lyon"),
-        EventShort("5","Conférence", "Ven, 07 Juin", "Lyon")
+        EventShort("1","Marathon", "Lun, 03 Juin", "Lyon", "10 km"),
+        EventShort("2","Concert", "Mar, 04 Juin", "Lyon", "20 km"),
+        EventShort("3","Festival", "Mer, 05 Juin", "Lyon", "30 km"),
+        EventShort("4","Exposition", "Jeu, 06 Juin", "Lyon", "40 km"),
+        EventShort("5","Conférence", "Ven, 07 Juin", "Lyon", "50 km")
     )
     EventsList(events)
 }

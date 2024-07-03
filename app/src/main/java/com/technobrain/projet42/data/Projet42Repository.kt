@@ -5,7 +5,9 @@ import android.content.Context;
 
 import com.technobrain.projet42.data.api.Projet42API
 import com.technobrain.projet42.data.api.SessionManager;
+import com.technobrain.projet42.data.api.model.EventResponse
 import com.technobrain.projet42.data.api.model.UserResponse
+import com.technobrain.projet42.domain.model.EventShort
 import com.technobrain.projet42.domain.model.UserShort
 import com.technobrain.projet42.domain.repositories.ApiRepository
 
@@ -58,6 +60,28 @@ class Projet42Repository(context:Context): ApiRepository {
             Result.failure(e)
         }
     }
+
+    override suspend fun getUserEvents(): Result<List<EventShort>> {
+        return try {
+            val response = api.userEvents(
+                token = "Bearer "+sessionManager.fetchAccessToken(),
+            )
+
+            if (response.isSuccessful) {
+                val eventResponse = response.body()
+                if (eventResponse != null) {
+                    val eventShortList = eventResponse.map { it.toEventShort() }
+                    Result.success(eventShortList)
+                } else {
+                    Result.failure(Exception("Events not found"))
+                }
+            } else {
+                Result.failure(Exception("Events not found"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }
 
 private fun UserResponse.toUserShort() =
@@ -66,4 +90,13 @@ private fun UserResponse.toUserShort() =
         this.firstName,
         this.lastName,
         this.photoProfil
+    )
+
+private fun EventResponse.toEventShort() =
+    EventShort(
+        this.id.toString(),
+        this.name,
+        this.date,
+        this.location,
+        this.distance.toString()
     )
