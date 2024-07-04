@@ -62,8 +62,12 @@ fun EventDetailScreen(
                     .height(250.dp),
                 contentAlignment = Alignment.Center
             ) {
-                // Replace with your actual map implementation
-                Text("Map")
+                Button(
+                    onClick = { navController.navigate("mapScreen") },
+                    modifier = Modifier
+                ) {
+                    Text("Voir le parcours", color = Color.White)
+                }
             }
 
             // Details

@@ -18,6 +18,7 @@ import com.technobrain.projet42.domain.model.EventShort
 import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.ui.document.DocumentScreen
 import com.technobrain.projet42.ui.event.EventScreen
+import com.technobrain.projet42.ui.event.MyMapPage
 import com.technobrain.projet42.ui.login.LoginForm
 import com.technobrain.projet42.ui.register.RegisterScreen
 import com.technobrain.projet42.ui.user.UserAccountScreen
@@ -57,6 +58,7 @@ fun AppNavigator(context: Context) {
 
     NavHost(navController, startDestination = "eventScreen") {
         composable("eventScreen") { EventScreen(navController, sessionManager) }
+        composable("mapScreen") { MyMapPage() }
         composable("userAccountPage") { UserAccountScreen(
             StatShort(42.0, 42.5, 42, 35.3),
             navController,
