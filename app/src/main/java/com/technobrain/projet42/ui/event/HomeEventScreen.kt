@@ -89,7 +89,7 @@ fun EventScreen(
                 SearchBar()
                 CarouselView(events = Carouselevents, context = LocalContext.current)
                 Spacer(modifier = Modifier.padding(8.dp))
-                EventsList(events = events)
+                EventsList(events = events, navController = navController)
 
             }
         }
