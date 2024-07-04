@@ -10,13 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
 import com.technobrain.projet42.domain.model.EventShort
 
 @Composable
 fun UserListEvent(
     events: List<EventShort>,
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -29,7 +29,8 @@ fun UserListEvent(
         ) {
             itemsIndexed(events) { _, item ->
                 EventItem(
-                    event = item
+                    event = item,
+                    navController = navController
                 )
                 HorizontalDivider(
                     thickness = 10.dp,

@@ -115,6 +115,7 @@ fun UserAccountScreen(
                         .background( Color(red = 66, green = 167, blue = 245) ),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    Spacer(modifier = modifier.size(30.dp))
                     AsyncImage(
                         modifier = Modifier
                             .size(100.dp)
@@ -171,7 +172,7 @@ fun UserAccountScreen(
                     ) {
                         when (selectedTab) {
                             0 -> UserInfo(navController, user, stat)
-                            1 -> UserListEvent(events)
+                            1 -> UserListEvent(events, navController)
                         }
                     }
                 }

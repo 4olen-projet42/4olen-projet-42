@@ -18,14 +18,6 @@ fun OsmMap(
     val context = LocalContext.current
     val mapView = MapView(context)
 
-    /*
-        [ 31.8, -5 ],
-        [ 32, -5 ],
-        [ 32, -4.7 ],
-        [ 31.8, -4.7 ],
-        [ 31.8, -5 ]
-
-     */
 
     val mockedCoordinates = listOf(
         GeoPoint(31.8, -5.0), // Paris, France

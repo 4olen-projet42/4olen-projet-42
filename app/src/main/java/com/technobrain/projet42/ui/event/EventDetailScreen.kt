@@ -140,7 +140,7 @@ fun EventDetailScreen(
 @Composable
 fun DefaultPreview() {
     EventDetailScreen(
-        event = EventShort("1", "Marathon", "Lun, 03 Juin", "Lyon"),
+        event = EventShort("1", "Marathon", "Lun, 03 Juin", "Lyon", "15km"),
         navController = NavHostController(LocalContext.current)
     )
 }
