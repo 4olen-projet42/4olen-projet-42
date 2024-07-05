@@ -1,15 +1,14 @@
 package com.technobrain.projet42.ui.component
 
-import android.os.AsyncTask
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
-import com.google.gson.Gson
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import com.technobrain.projet42.R
+import org.json.JSONObject
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -21,20 +20,99 @@ fun OsmMap(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val mapView = remember { MapView(context) }
-    var routePoints by remember { mutableStateOf<List<GeoPoint>>(emptyList()) }
+    val mapView = MapView(context)
 
+    // Load the configuration
     DisposableEffect(Unit) {
         val config = Configuration.getInstance()
         config.load(context, context.getSharedPreferences("osmdroid", 0))
         onDispose {}
     }
 
-    LaunchedEffect(Unit) {
-        fetchRouteData { points ->
-            routePoints = points
+    // Mock coordinates
+    // Use API to get the GeoJson of the Event
+    val geoJson = """
+        {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                "coordinates": [
+                  [
+                    2.3477743849163346,
+                    48.85165601314378
+                  ],
+                  [
+                    2.3508829308872237,
+                    48.84756479262086
+                  ],
+                  [
+                    2.3517009065518835,
+                    48.846524050251304
+                  ],
+                  [
+                    2.352436841377852,
+                    48.84446062980035
+                  ],
+                  [
+                    2.3523277071493283,
+                    48.84388646051568
+                  ],
+                  [
+                    2.350716772214696,
+                    48.838553405775286
+                  ],
+                  [
+                    2.3436890348217503,
+                    48.84122265521805
+                  ],
+                  [
+                    2.34064021056102,
+                    48.84696654070078
+                  ],
+                  [
+                    2.3426579503622236,
+                    48.85031484191316
+                  ],
+                  [
+                    2.3431819617853478,
+                    48.85140204222495
+                  ],
+                  [
+                    2.3454831089699155,
+                    48.850847547967675
+                  ]
+                ],
+                "type": "LineString"
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                "coordinates": [
+                  2.3477194682318157,
+                  48.85171080120671
+                ],
+                "type": "Point"
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                "coordinates": [
+                  2.345503341293579,
+                  48.85084410748823
+                ],
+                "type": "Point"
+              }
+            }
+          ]
         }
-    }
+    """.trimIndent()
 
     AndroidView(
         modifier = modifier.fillMaxSize(),
@@ -46,65 +124,52 @@ fun OsmMap(
             val mapController = it.controller
             mapController.setZoom(16.0)
 
-            if (routePoints.isNotEmpty()) {
-                val polyline = Polyline().apply {
-                    setPoints(routePoints)
-                    outlinePaint.color = android.graphics.Color.RED
-                    outlinePaint.strokeWidth = 10f
+            val geoPoints = ArrayList<GeoPoint>()
+
+            // Mock parsing of the GeoJson
+            val features = JSONObject(geoJson).getJSONArray("features")
+            for (i in 0 until features.length()) {
+                val feature = features.getJSONObject(i)
+                val geometry = feature.getJSONObject("geometry")
+                val geometryType = geometry.getString("type")
+
+                when (geometryType) {
+                    "LineString" -> {
+                        val coordinates = geometry.getJSONArray("coordinates")
+                        for (j in 0 until coordinates.length()) {
+                            val coord = coordinates.getJSONArray(j)
+                            geoPoints.add(GeoPoint(coord.getDouble(1), coord.getDouble(0)))
+                        }
+                        val polyline = Polyline().apply {
+                            setPoints(geoPoints)
+                            outlinePaint.color = android.graphics.Color.RED
+                            outlinePaint.strokeWidth = 5f
+                        }
+                        it.overlays.add(polyline)
+                        if (geoPoints.isNotEmpty()) {
+                            mapController.setCenter(geoPoints[0])
+                        }
+                    }
+                    "Point" -> {
+                        val coordinates = geometry.getJSONArray("coordinates")
+                        val geoPoint = GeoPoint(coordinates.getDouble(1), coordinates.getDouble(0))
+                        val marker = org.osmdroid.views.overlay.Marker(it).apply {
+                            position = geoPoint
+                            setAnchor(org.osmdroid.views.overlay.Marker.ANCHOR_CENTER, org.osmdroid.views.overlay.Marker.ANCHOR_BOTTOM)
+                            icon = context.getDrawable(R.drawable.baseline_location_pin_24)
+                        }
+                        it.overlays.add(marker)
+                        mapController.setCenter(geoPoint)
+                    }
+                    else -> {
+
+                    }
                 }
-                it.overlays.add(polyline)
-                mapController.setCenter(routePoints[0])
             }
         }
     )
 }
 
-private fun fetchRouteData(callback: (List<GeoPoint>) -> Unit) {
-    val coordinates = listOf(
-        GeoPoint(48.872, 2.3016),  // Champs-Élysées
-        /*GeoPoint(48.8738, 2.2950), // Arc de Triomphe
-        GeoPoint(48.8284, 2.4353), // Bois de Vincennes
-        GeoPoint(48.853, 2.369),   // Place de la Bastille
-        GeoPoint(48.8530, 2.3499), // Notre-Dame Cathedral
-        GeoPoint(48.8584, 2.2945), // Eiffel Tower
-        GeoPoint(48.863, 2.256),   // Bois de Boulogne*/
-        GeoPoint(48.8723, 2.2857)  // Avenue Foch
-    )
-
-    val apiKey = "5b3ce3597851110001cf6248a4400ded6fe945d6947188f7575a18d7"
-    val start = coordinates.first()
-    val end = coordinates.last()
-    val viaPoints = coordinates.drop(1).dropLast(1)
-
-    val viaPointsString = viaPoints.joinToString("|") { "${it.longitude},${it.latitude}" }
-    val url = "https://api.openrouteservice.org/v2/directions/foot-walking?api_key=$apiKey&start=${start.longitude},${start.latitude}&end=${end.longitude},${end.latitude}&via=$viaPointsString"
-
-    AsyncTask.execute {
-        val client = OkHttpClient()
-        val request = Request.Builder().url(url).build()
-        val response = client.newCall(request).execute()
-        val body = response.body?.string()
-        if (body != null) {
-            val routeResponse = Gson().fromJson(body, RouteResponse::class.java)
-            val routePoints = routeResponse.features[0].geometry.coordinates.map {
-                GeoPoint(it[1], it[0])
-            }
-            callback(routePoints)
-        }
-    }
-}
-
-data class RouteResponse(
-    val features: List<Feature>
-)
-
-data class Feature(
-    val geometry: Geometry
-)
-
-data class Geometry(
-    val coordinates: List<List<Double>>
-)
 
 @Preview
 @Composable
