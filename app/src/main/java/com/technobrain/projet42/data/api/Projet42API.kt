@@ -2,6 +2,7 @@ package com.technobrain.projet42.data.api;
 
 import com.technobrain.projet42.data.api.model.DocumentResponse
 import com.technobrain.projet42.data.api.model.EventResponse
+import com.technobrain.projet42.data.api.model.StatsResponse
 import com.technobrain.projet42.data.api.model.UserResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -44,5 +45,8 @@ interface Projet42API {
         @Header("Authorization") token: String,
     ): Response<List<EventResponse>>
 
-
+    @GET("/api/evenements/statsByUser")
+    suspend fun userStats(
+        @Header("Authorization") token: String,
+    ): Response<StatsResponse>
 }

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.technobrain.projet42.data.Projet42Repository
+import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.domain.repositories.ApiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,8 +27,18 @@ class UserAccountViewModel (application: Application) : AndroidViewModel(applica
             }
             userRepository.getUserInfos().onSuccess { user ->
                 userRepository.getUserEvents().onSuccess { events ->
-                    _uiState.update {
-                        UserAccountState.Loaded(user, events)
+                    userRepository.getUserStats().onSuccess { stats ->
+                        _uiState.update {
+                            UserAccountState.Loaded(user, events, StatShort(stats.nbParticipation, stats.distanceTotale))
+                        }
+                    }.onFailure {
+                        error -> _uiState.update {
+                            UserAccountState.Error(error.message ?: "An error occurred")
+                        }
+                    }
+                }.onFailure {
+                    error -> _uiState.update {
+                        UserAccountState.Error(error.message ?: "An error occurred")
                     }
                 }
             }.onFailure { error ->
