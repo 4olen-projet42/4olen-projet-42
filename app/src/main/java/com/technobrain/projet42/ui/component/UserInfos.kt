@@ -84,24 +84,6 @@ fun UserInfo(
                 style = MaterialTheme.typography.headlineSmall
             )
         }
-        HorizontalDivider(
-            thickness = 10.dp,
-            color = Color.Transparent
-        )
-        Row(
-            modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            Spacer(modifier = modifier.size(10.dp))
-            Text(
-                text = "Classement moyen : ",
-                style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = statShort.classementMoyen.toString(),
-                style = MaterialTheme.typography.headlineSmall
-            )
-        }
     }
 }
 
