@@ -16,7 +16,7 @@ import retrofit2.http.Path
 
 interface Projet42API {
 
-    @GET("/api/utilisateurs/infos")
+    @GET("/api/utilisateurs/me")
     suspend fun userInfos(
         @Header("Authorization") token: String,
     ): Response<UserResponse>
@@ -28,18 +28,18 @@ interface Projet42API {
         @Header("Authorization") token: String
     ): Response<ResponseBody>
 
-    @GET("/api/documents/list")
+    @GET("/api/documents")
     suspend fun getDocuments(
         @Header("Authorization") token: String,
     ): Response<List<DocumentResponse>>
 
-    @DELETE("/api/documents/delete/{id}")
+    @DELETE("/api/documents/{id}")
     suspend fun deleteDocument(
         @Header("Authorization") token: String,
         @Path("id") documentId: String
     ): Response<ResponseBody>
 
-    @GET("/evenements/api/byUser")
+    @GET("/api/evenements/byUser")
     suspend fun userEvents(
         @Header("Authorization") token: String,
     ): Response<List<EventResponse>>
