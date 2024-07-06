@@ -65,10 +65,6 @@ fun LoginForm(
             }
             is LoginState.Loading -> {
             }
-            is LoginState.Error -> {
-            }
-            else -> {
-            }
         }
     }
 

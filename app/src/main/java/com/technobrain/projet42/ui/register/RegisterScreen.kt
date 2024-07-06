@@ -76,10 +76,6 @@ fun RegisterScreen(
             }
             is RegisterState.Loading -> {
             }
-            is RegisterState.Error -> {
-            }
-            else -> {
-            }
         }
     }
 

@@ -26,6 +26,6 @@ interface KeycloakAPI {
     suspend fun register(
         @Header("Authorization") token: String,
         @Body user: KeycloakUser
-    ): Response<TokenResponse>
+    ): Response<Void>
 
 }
