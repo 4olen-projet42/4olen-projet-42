@@ -62,7 +62,8 @@ fun AppNavigator(context: Context) {
         composable("userAccountPage") { UserAccountScreen(
             StatShort(42.0, 42.5, 42, 35.3),
             navController,
-            sessionManager
+            sessionManager,
+            context
         ) }
         composable("LoginForm") { LoginForm(navController) }
         composable("registerScreen") { RegisterScreen(navController) }
@@ -73,7 +74,7 @@ fun AppNavigator(context: Context) {
                 EventDetailScreen(event, navController)
             }
         }
-        composable("documentScreen") { DocumentScreen(navController, context) }
+        composable("documentScreen") { DocumentScreen(context) }
     }
 }
 

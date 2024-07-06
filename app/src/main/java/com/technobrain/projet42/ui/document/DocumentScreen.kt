@@ -37,7 +37,6 @@ import com.technobrain.projet42.ui.component.DocumentItem
 
 @Composable
 fun DocumentScreen(
-    navController: NavHostController,
     context: Context
 ) {
     val viewModel: DocumentViewModel = viewModel()
@@ -53,27 +52,6 @@ fun DocumentScreen(
             .fillMaxSize()
     ) {
 
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                IconButton(
-                    onClick = { navController.navigate("userAccountPage") },
-                    modifier = Modifier.align(Alignment.TopStart)
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Retour"
-                    )
-                }
-                Text(
-                    "Mes documents",
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-        }
 
         when (val state = uiState) {
             is DocumentState.Loading -> {
@@ -129,5 +107,5 @@ fun DocumentScreen(
 @Preview(showBackground = true)
 @Composable
 fun DocumentScreenPreview() {
-    DocumentScreen(navController = rememberNavController() , context = LocalContext.current)
+    DocumentScreen(context = LocalContext.current)
 }

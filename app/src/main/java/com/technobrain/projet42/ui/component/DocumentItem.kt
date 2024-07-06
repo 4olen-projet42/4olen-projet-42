@@ -23,9 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.technobrain.projet42.R
 import com.technobrain.projet42.domain.model.DocumentShort
 import com.technobrain.projet42.ui.document.DocumentViewModel
@@ -37,7 +35,8 @@ fun DocumentItem(document: DocumentShort, viewModel: DocumentViewModel, onDocume
         modifier = Modifier
             .height(65.dp)
             .fillMaxSize()
-            .clip(RoundedCornerShape(14.dp)),
+            .clip(RoundedCornerShape(14.dp))
+            .padding(start = 5.dp, end = 5.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -61,7 +60,6 @@ fun DocumentItem(document: DocumentShort, viewModel: DocumentViewModel, onDocume
                     .size(64.dp)
                     .clip(CircleShape)
                     .clickable {
-                        /* mettre le delete */
                         viewModel.deleteDocument(document.id)
                         onDocumentReload()
                     },
@@ -71,13 +69,3 @@ fun DocumentItem(document: DocumentShort, viewModel: DocumentViewModel, onDocume
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun DocumentItemPreview() {
-//    DocumentItem(
-//        DocumentShort(
-//            id = "1",
-//            name = "Document 1"
-//        )
-//    )
-//}
