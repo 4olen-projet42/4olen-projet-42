@@ -2,13 +2,13 @@ package com.technobrain.projet42.domain.repositories;
 
 import com.technobrain.projet42.domain.model.DocumentShort
 import com.technobrain.projet42.domain.model.EventShort
+import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.domain.model.UserShort
 import java.io.File
 
 interface ApiRepository {
 
     suspend fun getUserInfos(): Result<UserShort>
-
 
     suspend fun uploadFile(path: String, name: String): Result<String>
 
@@ -18,6 +18,8 @@ interface ApiRepository {
 
     suspend fun getUserEvents(): Result<List<EventShort>>
 
+    suspend fun getUserStats(): Result<StatShort>
+  
     suspend fun searchEvent(search: String): Result<List<EventShort>>
 
     suspend fun getEvents(): Result<List<EventShort>>

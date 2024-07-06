@@ -8,7 +8,9 @@ import com.technobrain.projet42.data.api.model.DocumentResponse
 import com.technobrain.projet42.data.api.model.UserResponse
 import com.technobrain.projet42.domain.model.DocumentShort
 import com.technobrain.projet42.data.api.model.EventResponse
+import com.technobrain.projet42.data.api.model.StatsResponse
 import com.technobrain.projet42.domain.model.EventShort
+import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.domain.model.UserShort
 import com.technobrain.projet42.domain.repositories.ApiRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -153,6 +155,28 @@ class Projet42Repository(context:Context): ApiRepository {
         }
     }
 
+    override suspend fun getUserStats(): Result<StatShort> {
+        return try {
+            val response = api.userStats(
+                token = "Bearer "+sessionManager.fetchAccessToken(),
+            )
+
+            if (response.isSuccessful) {
+                val statsResponse = response.body()
+                if (statsResponse != null) {
+                    val statShort = statsResponse.toStatShort()
+                    Result.success(statShort)
+                } else {
+                    Result.failure(Exception("Stats not found"))
+                }
+            } else {
+                Result.failure(Exception("Stats not found"))
+            }
+            } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     override suspend fun searchEvent(search: String): Result<List<EventShort>> {
         return try {
             val response = api.searchEvent(search)
@@ -189,7 +213,6 @@ class Projet42Repository(context:Context): ApiRepository {
             } else {
                 Result.failure(Exception("Event not found"))
             }
-
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -209,7 +232,7 @@ private fun DocumentResponse.toDocumentShort() =
     DocumentShort(
         this.id,
         this.fileName
-      )
+    )
 
 private fun EventResponse.toEventShort() =
     EventShort(
@@ -218,4 +241,10 @@ private fun EventResponse.toEventShort() =
         this.date,
         this.location,
         this.distance.toString()
+    )
+
+private fun StatsResponse.toStatShort() =
+    StatShort(
+        this.numberOfEvents.toString(),
+        this.totalDistance.toString()
     )

@@ -49,7 +49,6 @@ import com.technobrain.projet42.ui.document.DocumentScreen
 
 @Composable
 fun UserAccountScreen(
-    stat: StatShort,
     navController: NavHostController,
     sessionManager: SessionManager,
     context: Context,
@@ -77,6 +76,7 @@ fun UserAccountScreen(
         is UserAccountState.Loaded -> {
             val user = (uiState as UserAccountState.Loaded).userShort
             val events = (uiState as UserAccountState.Loaded).events
+            val stat = (uiState as UserAccountState.Loaded).statShort
             Column(modifier = modifier.fillMaxSize()) {
                 Box(
                     modifier = modifier

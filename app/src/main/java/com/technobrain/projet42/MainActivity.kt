@@ -60,7 +60,6 @@ fun AppNavigator(context: Context) {
         composable("eventScreen") { EventScreen(navController, sessionManager) }
         composable("mapScreen") { MyMapPage() }
         composable("userAccountPage") { UserAccountScreen(
-            StatShort(42.0, 42.5, 42, 35.3),
             navController,
             sessionManager,
             context
