@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,16 +25,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.technobrain.projet42.R
 import com.technobrain.projet42.domain.model.EventShort
 
 @Composable
-fun EventItem(event: EventShort) {
+fun EventItem(event: EventShort, navController: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { /* Handle event click */ },
+            .clickable { navController.navigate("eventDetail/${event.id}") },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image( // change to AsyncImage when available
@@ -61,8 +63,8 @@ fun EventItem(event: EventShort) {
 @Composable
 fun EventItemPreview() {
     MaterialTheme {
-        EventItem(
-            EventShort("1","Marathon", "Lun, 03 Juin", "Lyon", "10 km")
-        )
+        /*EventItem(
+            EventShort("1","Marathon", "Lun, 03 Juin", "Lyon")
+        )*/
     }
 }
