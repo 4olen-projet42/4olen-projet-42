@@ -44,5 +44,13 @@ interface Projet42API {
         @Header("Authorization") token: String,
     ): Response<List<EventResponse>>
 
+    @GET("/evenements/like/{search}")
+    suspend fun searchEvent(
+        @Path("search") search: String
+    ): Response<List<EventResponse>>
+
+    @GET("/evenements/allAvailable")
+    suspend fun getEvents(
+    ): Response<List<EventResponse>>
 
 }
