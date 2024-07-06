@@ -49,4 +49,14 @@ interface Projet42API {
     suspend fun userStats(
         @Header("Authorization") token: String,
     ): Response<StatsResponse>
+
+    @GET("/evenements/like/{search}")
+    suspend fun searchEvent(
+        @Path("search") search: String
+    ): Response<List<EventResponse>>
+
+    @GET("/evenements/allAvailable")
+    suspend fun getEvents(
+    ): Response<List<EventResponse>>
+
 }

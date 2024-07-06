@@ -26,7 +26,6 @@ import com.technobrain.projet42.domain.model.UserShort
 
 @Composable
 fun UserInfo(
-    navController: NavHostController,
     userShort: UserShort,
     statShort: StatShort,
     modifier: Modifier = Modifier,
@@ -89,14 +88,19 @@ fun UserInfo(
             thickness = 10.dp,
             color = Color.Transparent
         )
-        Button(
-            onClick = {
-                navController.navigate("documentScreen")
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors( Color(0xFF1B85F3)),
+        Row(
+            modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ){
-            Text(text = "Mes documents")
+            Spacer(modifier = modifier.size(10.dp))
+            Text(
+                text = "Classement moyen : ",
+                style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = statShort.classementMoyen.toString(),
+                style = MaterialTheme.typography.headlineSmall
+            )
         }
     }
 }
@@ -115,6 +119,6 @@ fun UserInfoPreview() {
             distanceTotale = "100.0",
             nbParticipation = "5",
         )
-        UserInfo(navController = rememberNavController(), user, stat)
+        UserInfo(user, stat)
     }
 }

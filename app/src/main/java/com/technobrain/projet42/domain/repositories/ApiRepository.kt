@@ -19,5 +19,9 @@ interface ApiRepository {
     suspend fun getUserEvents(): Result<List<EventShort>>
 
     suspend fun getUserStats(): Result<StatShort>
+  
+    suspend fun searchEvent(search: String): Result<List<EventShort>>
+
+    suspend fun getEvents(): Result<List<EventShort>>
 
 }

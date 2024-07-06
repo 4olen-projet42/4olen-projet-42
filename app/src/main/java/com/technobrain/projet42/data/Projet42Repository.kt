@@ -172,6 +172,47 @@ class Projet42Repository(context:Context): ApiRepository {
             } else {
                 Result.failure(Exception("Stats not found"))
             }
+            } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun searchEvent(search: String): Result<List<EventShort>> {
+        return try {
+            val response = api.searchEvent(search)
+
+            if (response.isSuccessful) {
+                val eventResponse = response.body()
+                if (eventResponse != null) {
+                    val eventShortList = eventResponse.map { it.toEventShort() }
+                    Result.success(eventShortList)
+                } else {
+                    Result.failure(Exception("Event not found"))
+                }
+            } else {
+                Result.failure(Exception("Event not found"))
+            }
+
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getEvents(): Result<List<EventShort>> {
+        return try {
+            val response = api.getEvents()
+
+            if (response.isSuccessful) {
+                val eventResponse = response.body()
+                if (eventResponse != null) {
+                    val eventShortList = eventResponse.map { it.toEventShort() }
+                    Result.success(eventShortList)
+                } else {
+                    Result.failure(Exception("Event not found"))
+                }
+            } else {
+                Result.failure(Exception("Event not found"))
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }

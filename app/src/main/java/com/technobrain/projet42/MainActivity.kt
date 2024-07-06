@@ -17,7 +17,7 @@ import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.domain.model.EventShort
 import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.ui.document.DocumentScreen
-import com.technobrain.projet42.ui.event.EventScreen
+import com.technobrain.projet42.ui.home.EventScreen
 import com.technobrain.projet42.ui.event.MyMapPage
 import com.technobrain.projet42.ui.login.LoginForm
 import com.technobrain.projet42.ui.register.RegisterScreen
@@ -61,7 +61,8 @@ fun AppNavigator(context: Context) {
         composable("mapScreen") { MyMapPage() }
         composable("userAccountPage") { UserAccountScreen(
             navController,
-            sessionManager
+            sessionManager,
+            context
         ) }
         composable("LoginForm") { LoginForm(navController) }
         composable("registerScreen") { RegisterScreen(navController) }
@@ -72,7 +73,7 @@ fun AppNavigator(context: Context) {
                 EventDetailScreen(event, navController)
             }
         }
-        composable("documentScreen") { DocumentScreen(navController, context) }
+        composable("documentScreen") { DocumentScreen(context) }
     }
 }
 
