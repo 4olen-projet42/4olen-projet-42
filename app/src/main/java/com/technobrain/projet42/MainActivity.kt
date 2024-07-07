@@ -46,11 +46,11 @@ fun AppNavigator(context: Context) {
     val sessionManager = SessionManager(context)
 
     val events = listOf(
-        EventShort("1","Marathon", "Lun, 03 Juin", "Lyon", "1Okm"),
-        EventShort("2","Concert", "Mar, 04 Juin", "Lyon", "1Okm"),
-        EventShort("3","Festival", "Mer, 05 Juin", "Lyon", "1Okm"),
-        EventShort("4","Exposition", "Jeu, 06 Juin", "Lyon", "1Okm"),
-        EventShort("5","Conférence", "Ven, 07 Juin", "Lyon", "1Okm")
+        EventShort("1", "Marathon", "Lun, 03 Juin", "Lyon", "1Okm"),
+        EventShort("2", "Concert", "Mar, 04 Juin", "Lyon", "1Okm"),
+        EventShort("3", "Festival", "Mer, 05 Juin", "Lyon", "1Okm"),
+        EventShort("4", "Exposition", "Jeu, 06 Juin", "Lyon", "1Okm"),
+        EventShort("5", "Conférence", "Ven, 07 Juin", "Lyon", "1Okm")
     )
 
     val navController = rememberNavController()
@@ -58,19 +58,18 @@ fun AppNavigator(context: Context) {
     NavHost(navController, startDestination = "eventScreen") {
         composable("eventScreen") { EventScreen(navController, sessionManager) }
         composable("mapScreen") { MyMapPage() }
-        composable("userAccountPage") { UserAccountScreen(
-            navController,
-            sessionManager,
-            context
-        ) }
+        composable("userAccountPage") {
+            UserAccountScreen(
+                navController,
+                sessionManager,
+                context
+            )
+        }
         composable("LoginForm") { LoginForm(navController) }
         composable("registerScreen") { RegisterScreen(navController) }
         composable("eventDetail/{eventId}") { backStackEntry ->
             val eventId = backStackEntry.arguments?.getString("eventId")
-            val event = events.find { it.id == eventId }
-            if (event != null) {
-                EventDetailScreen(event, navController)
-            }
+            EventDetailScreen(eventId!!, navController)
         }
         composable("documentScreen") { DocumentScreen(context) }
     }

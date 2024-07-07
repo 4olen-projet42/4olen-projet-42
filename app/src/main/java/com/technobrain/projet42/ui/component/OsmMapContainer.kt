@@ -17,6 +17,7 @@ import org.osmdroid.views.overlay.Polyline
 
 @Composable
 fun OsmMap(
+    parcoursJSON: String,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -29,90 +30,8 @@ fun OsmMap(
         onDispose {}
     }
 
-    // Mock coordinates
-    // Use API to get the GeoJson of the Event
-    val geoJson = """
-        {
-          "type": "FeatureCollection",
-          "features": [
-            {
-              "type": "Feature",
-              "properties": {},
-              "geometry": {
-                "coordinates": [
-                  [
-                    2.3477743849163346,
-                    48.85165601314378
-                  ],
-                  [
-                    2.3508829308872237,
-                    48.84756479262086
-                  ],
-                  [
-                    2.3517009065518835,
-                    48.846524050251304
-                  ],
-                  [
-                    2.352436841377852,
-                    48.84446062980035
-                  ],
-                  [
-                    2.3523277071493283,
-                    48.84388646051568
-                  ],
-                  [
-                    2.350716772214696,
-                    48.838553405775286
-                  ],
-                  [
-                    2.3436890348217503,
-                    48.84122265521805
-                  ],
-                  [
-                    2.34064021056102,
-                    48.84696654070078
-                  ],
-                  [
-                    2.3426579503622236,
-                    48.85031484191316
-                  ],
-                  [
-                    2.3431819617853478,
-                    48.85140204222495
-                  ],
-                  [
-                    2.3454831089699155,
-                    48.850847547967675
-                  ]
-                ],
-                "type": "LineString"
-              }
-            },
-            {
-              "type": "Feature",
-              "properties": {},
-              "geometry": {
-                "coordinates": [
-                  2.3477194682318157,
-                  48.85171080120671
-                ],
-                "type": "Point"
-              }
-            },
-            {
-              "type": "Feature",
-              "properties": {},
-              "geometry": {
-                "coordinates": [
-                  2.345503341293579,
-                  48.85084410748823
-                ],
-                "type": "Point"
-              }
-            }
-          ]
-        }
-    """.trimIndent()
+    // geoJson from the API
+    val geoJson = parcoursJSON
 
     AndroidView(
         modifier = modifier.fillMaxSize(),
@@ -174,5 +93,5 @@ fun OsmMap(
 @Preview
 @Composable
 fun DefaultPreview() {
-    OsmMap()
+    OsmMap(parcoursJSON = "")
 }
