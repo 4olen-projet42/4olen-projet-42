@@ -22,5 +22,6 @@ data class EventResponse (
     @SerializedName("denivele")
     val denivele: Int,
     @SerializedName("heureDebut")
-    val heure: String
+    val heure: String,
+    val sports: List<SportResponse>,
 )

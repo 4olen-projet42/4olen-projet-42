@@ -11,73 +11,46 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeEventViewModel (application: Application) : AndroidViewModel(application){
+class HomeEventViewModel(application: Application) : AndroidViewModel(application) {
 
     private val apiRepository: ApiRepository = Projet42Repository(application)
 
-    private val _uiState = MutableStateFlow<HomeEventState>(HomeEventState.Loading)
+    private val _allEventsState = MutableStateFlow<HomeEventState>(HomeEventState.Loading)
+    val allEventsState: StateFlow<HomeEventState> get() = _allEventsState.asStateFlow()
 
-    val uiState: StateFlow<HomeEventState> get() = _uiState.asStateFlow()
-
+    private val _newEventsState = MutableStateFlow<HomeEventState>(HomeEventState.Loading)
+    val newEventsState: StateFlow<HomeEventState> get() = _newEventsState.asStateFlow()
 
     fun searchEvent(text: String) {
-
-        // Create a new coroutine to move the execution off the UI thread
         viewModelScope.launch {
-            _uiState.update {
-                HomeEventState.Loading
-            }
-
+            _allEventsState.update { HomeEventState.Loading }
             apiRepository.searchEvent(text).onSuccess { event ->
-                _uiState.update {
-                    HomeEventState.Loaded(event)
-                }
+                _allEventsState.update { HomeEventState.Loaded(event) }
             }.onFailure { error ->
-                _uiState.update {
-                    HomeEventState.Error(error.message ?: "An error occurred")
-                }
+                _allEventsState.update { HomeEventState.Error(error.message ?: "An error occurred") }
             }
         }
     }
 
     fun getEvents() {
-
-        // Create a new coroutine to move the execution off the UI thread
         viewModelScope.launch {
-            _uiState.update {
-                HomeEventState.Loading
-            }
-
-            apiRepository.getEvents().onSuccess { event ->
-                _uiState.update {
-                    HomeEventState.Loaded(event)
-                }
+            _allEventsState.update { HomeEventState.Loading }
+            apiRepository.getEvents().onSuccess { events ->
+                _allEventsState.update { HomeEventState.Loaded(events) }
             }.onFailure { error ->
-                _uiState.update {
-                    HomeEventState.Error(error.message ?: "An error occurred")
-                }
+                _allEventsState.update { HomeEventState.Error(error.message ?: "An error occurred") }
             }
         }
     }
 
     fun getNewEvents() {
-
-        // Create a new coroutine to move the execution off the UI thread
         viewModelScope.launch {
-            _uiState.update {
-                HomeEventState.Loading
-            }
-
-            apiRepository.getNewEvents().onSuccess { event ->
-                _uiState.update {
-                    HomeEventState.Loaded(event)
-                }
+            _newEventsState.update { HomeEventState.Loading }
+            apiRepository.getNewEvents().onSuccess { events ->
+                _newEventsState.update { HomeEventState.Loaded(events) }
             }.onFailure { error ->
-                _uiState.update {
-                    HomeEventState.Error(error.message ?: "An error occurred")
-                }
+                _newEventsState.update { HomeEventState.Error(error.message ?: "An error occurred") }
             }
         }
     }
-
 }

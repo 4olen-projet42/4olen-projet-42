@@ -7,12 +7,14 @@ import com.technobrain.projet42.data.api.KeycloakAPI
 import com.technobrain.projet42.data.api.Projet42API
 import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.data.api.model.DocumentResponse
+import com.technobrain.projet42.data.api.model.EventResponse
+import com.technobrain.projet42.data.api.model.SportResponse
+import com.technobrain.projet42.data.api.model.StatsResponse
 import com.technobrain.projet42.data.api.model.UserResponse
 import com.technobrain.projet42.domain.model.DocumentShort
-import com.technobrain.projet42.data.api.model.EventResponse
-import com.technobrain.projet42.data.api.model.StatsResponse
 import com.technobrain.projet42.domain.model.EventDetail
 import com.technobrain.projet42.domain.model.EventShort
+import com.technobrain.projet42.domain.model.Sport
 import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.domain.model.UserShort
 import com.technobrain.projet42.domain.repositories.ApiRepository
@@ -351,7 +353,14 @@ private fun EventResponse.toEventDetail() =
         distance,
         parcoursJSON,
         denivele,
-        heure
+        heure,
+        sports.map { it.toSport().nom }
+    )
+
+private fun SportResponse.toSport() =
+    Sport(
+        id.toString(),
+        nom
     )
 
 private fun StatsResponse.toStatShort() =

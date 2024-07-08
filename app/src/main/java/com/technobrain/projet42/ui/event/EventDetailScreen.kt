@@ -60,7 +60,11 @@ fun EventDetailScreen(
                         title = { Text(event.nom, color = Color.White) },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigate("eventScreen") }) {
-                                Icon(Icons.Filled.ArrowBack, contentDescription = "Retour", tint = Color.White)
+                                Icon(
+                                    Icons.Filled.ArrowBack,
+                                    contentDescription = "Retour",
+                                    tint = Color.White
+                                )
                             }
                         },
                         colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -110,8 +114,26 @@ fun EventDetailScreen(
                                     Text("${date[2]}/${date[1]}/${date[0]}", fontSize = 18.sp)
                                 }
                                 Column {
-                                    Text("Heure de début", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                                    Text(
+                                        "Heure de début",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp
+                                    )
                                     Text(event.heure, fontSize = 18.sp)
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            if (event.sports.isNotEmpty()) {
+                                Row {
+                                    Text("Sport : ", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                                    for (sport in event.sports) {
+                                        Text(
+                                            text = sport + ", ",
+                                            fontSize = 18.sp
+                                        )
+                                    }
                                 }
                             }
 
@@ -120,7 +142,11 @@ fun EventDetailScreen(
                             if (event.distance > 0) {
                                 Row {
 
-                                    Text("Distance : ", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                                    Text(
+                                        "Distance : ",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp
+                                    )
                                     Text(
                                         text = event.distance.toString() + " km",
                                         fontSize = 18.sp
@@ -129,13 +155,18 @@ fun EventDetailScreen(
                             }
                             if (event.denivele > 0) {
                                 Row {
-                                    Text("Dénivelé : ", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                                    Text(
+                                        "Dénivelé : ",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp
+                                    )
                                     Text(
                                         text = event.denivele.toString() + " m",
                                         fontSize = 18.sp
                                     )
                                 }
                             }
+
 
                             Spacer(modifier = Modifier.height(18.dp))
 

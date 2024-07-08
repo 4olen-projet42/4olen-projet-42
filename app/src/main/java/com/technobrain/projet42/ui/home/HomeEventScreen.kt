@@ -1,7 +1,6 @@
 package com.technobrain.projet42.ui.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,8 +42,11 @@ fun EventScreen(
 
     val viewModel: HomeEventViewModel = viewModel()
 
-    val viewModelState by viewModel.uiState.collectAsState()
+    // Collect states for new events and all events
+    val newEventsState by viewModel.newEventsState.collectAsState()
+    val allEventsState by viewModel.allEventsState.collectAsState()
 
+    // Initialize both states
     LaunchedEffect(Unit) {
         viewModel.getEvents()
         viewModel.getNewEvents()
@@ -79,51 +81,20 @@ fun EventScreen(
 
             SearchBar(onSearchClick = { viewModel.searchEvent(it) })
             Spacer(modifier = Modifier.padding(8.dp))
-            when (val state = viewModelState) {
-                is HomeEventState.Empty -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "no result"
-                        )
-                    }
-                }
+            // Carousel for new events
+            when (val state = newEventsState) {
+                is HomeEventState.Loading -> CircularProgressIndicator()
+                is HomeEventState.Loaded -> CarouselView(events = state.events, context = LocalContext.current, navController = navController)
+                is HomeEventState.Error -> Text(text = state.message)
+                HomeEventState.Empty -> Text(text = "No new events")
+            }
 
-                is HomeEventState.Error -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = state.message
-                        )
-                    }
-                }
-
-                is HomeEventState.Loaded -> {
-
-                    CarouselView(
-                        events = state.events,
-                        context = LocalContext.current,
-                        navController = navController
-                    )
-
-                    EventsList(events = state.events, navController = navController)
-                }
-
-                is HomeEventState.Loading -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
+            // Event list for all events
+            when (val state = allEventsState) {
+                is HomeEventState.Loading -> CircularProgressIndicator()
+                is HomeEventState.Loaded -> EventsList(events = state.events, navController = navController)
+                is HomeEventState.Error -> Text(text = state.message)
+                HomeEventState.Empty -> Text(text = "No events available")
             }
 
         }

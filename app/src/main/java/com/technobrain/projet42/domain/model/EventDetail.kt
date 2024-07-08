@@ -11,4 +11,5 @@ data class EventDetail(
     val parcoursJSON: String,
     val denivele: Int,
     val heure: String,
+    val sports: List<String>,
 )
