@@ -2,11 +2,9 @@ package com.technobrain.projet42.ui.home
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.technobrain.projet42.data.Projet42Repository
 import com.technobrain.projet42.domain.repositories.ApiRepository
-import com.technobrain.projet42.ui.document.DocumentState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,6 +49,26 @@ class HomeEventViewModel (application: Application) : AndroidViewModel(applicati
             }
 
             apiRepository.getEvents().onSuccess { event ->
+                _uiState.update {
+                    HomeEventState.Loaded(event)
+                }
+            }.onFailure { error ->
+                _uiState.update {
+                    HomeEventState.Error(error.message ?: "An error occurred")
+                }
+            }
+        }
+    }
+
+    fun getNewEvents() {
+
+        // Create a new coroutine to move the execution off the UI thread
+        viewModelScope.launch {
+            _uiState.update {
+                HomeEventState.Loading
+            }
+
+            apiRepository.getNewEvents().onSuccess { event ->
                 _uiState.update {
                     HomeEventState.Loaded(event)
                 }

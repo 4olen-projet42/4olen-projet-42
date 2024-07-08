@@ -26,4 +26,6 @@ interface ApiRepository {
 
     suspend fun getEventDetail(eventId: String): Result<EventDetail>
 
+    suspend fun getNewEvents(): Result<List<EventShort>>
+
 }

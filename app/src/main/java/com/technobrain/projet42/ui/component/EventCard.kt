@@ -1,40 +1,31 @@
 package com.technobrain.projet42.ui.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.technobrain.projet42.R
+import coil.compose.AsyncImage
 import com.technobrain.projet42.domain.model.EventShort
 
 @Composable
-fun EventCard(event: EventShort) {
-    Box(modifier = Modifier.fillMaxWidth()) {
-        Image( // change to AsyncImage when available
-            painter = painterResource(id = R.drawable.ic_launcher_foreground), // Remplacer `background_image` par votre ressource
-            contentDescription = "Background",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(200.dp)
-        )
+fun EventCard(event: EventShort, onClick: () -> Unit) {
+    Card(modifier = Modifier.fillMaxWidth(), onClick = { onClick() }) {
+        AsyncImage(model = event.image, contentDescription = null, modifier = Modifier.aspectRatio(16f / 9).height(150.dp).scale(1f))
         Column(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
                 .background(Color(0xAA000000)) // Semi-transparent black background
                 .padding(16.dp)
                 .fillMaxWidth(),
@@ -59,7 +50,9 @@ fun EventCardPreview() {
             name = "Evenement 1",
             date = "Lundi 01 janvier",
             location = "Lyon",
-            distance = "10 km"
+            distance = "10 km",
+            image = "https://picsum.photos/200/300"
         )
-    )
+    ) {
+    }
 }

@@ -274,6 +274,26 @@ class Projet42Repository(context:Context): ApiRepository {
         }
     }
 
+    override suspend fun getNewEvents(): Result<List<EventShort>> {
+        return try {
+            val response = api.getNewEvents()
+
+            if (response.isSuccessful) {
+                val eventResponse = response.body()
+                if (eventResponse != null) {
+                    val eventShortList = eventResponse.map { it.toEventShort() }
+                    Result.success(eventShortList)
+                } else {
+                    Result.failure(Exception("Event not found"))
+                }
+            } else {
+                Result.failure(Exception("Event not found"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     override suspend fun getEventDetail(eventId: String): Result<EventDetail> {
         return try {
             val response = api.getEventDetail(eventId)
@@ -281,18 +301,7 @@ class Projet42Repository(context:Context): ApiRepository {
             if (response.isSuccessful) {
                 val eventResponse = response.body()
                 if (eventResponse != null) {
-                    val eventDetail = EventDetail(
-                        eventResponse.id.toString(),
-                        eventResponse.name,
-                        eventResponse.image,
-                        eventResponse.maxParticipants,
-                        eventResponse.date,
-                        eventResponse.location,
-                        eventResponse.distance,
-                        eventResponse.parcoursJSON,
-                        eventResponse.denivele,
-                        eventResponse.heure
-                    )
+                    val eventDetail = eventResponse.toEventDetail()
                     Result.success(eventDetail)
                 } else {
                     Result.failure(Exception("Event not found"))
@@ -327,7 +336,22 @@ private fun EventResponse.toEventShort() =
         this.name,
         this.date,
         this.location,
-        this.distance.toString()
+        this.distance.toString(),
+        this.image
+    )
+
+private fun EventResponse.toEventDetail() =
+    EventDetail(
+        this.id.toString(),
+        name,
+        image,
+        maxParticipants,
+        date,
+        location,
+        distance,
+        parcoursJSON,
+        denivele,
+        heure
     )
 
 private fun StatsResponse.toStatShort() =

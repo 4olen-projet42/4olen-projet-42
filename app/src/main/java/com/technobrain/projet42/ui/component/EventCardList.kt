@@ -24,12 +24,12 @@ fun EventsList(events: List<EventShort>, navController: NavHostController) {
 @Preview
 @Composable
 fun EventCardListPreview() {
-    val events = listOf(
+/*    val events = listOf(
         EventShort("1","Marathon", "Lun, 03 Juin", "Lyon", "10 km"),
         EventShort("2","Concert", "Mar, 04 Juin", "Lyon", "20 km"),
         EventShort("3","Festival", "Mer, 05 Juin", "Lyon", "30 km"),
         EventShort("4","Exposition", "Jeu, 06 Juin", "Lyon", "40 km"),
         EventShort("5","Conférence", "Ven, 07 Juin", "Lyon", "50 km")
-    )
+    )*/
     // EventsList(events)
 }

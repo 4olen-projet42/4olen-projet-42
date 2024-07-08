@@ -1,7 +1,6 @@
 package com.technobrain.projet42.data.api;
 
 import com.technobrain.projet42.data.api.model.DocumentResponse
-import com.technobrain.projet42.data.api.model.EventDetailResponse
 import com.technobrain.projet42.data.api.model.EventResponse
 import com.technobrain.projet42.data.api.model.StatsResponse
 import com.technobrain.projet42.data.api.model.UserResponse
@@ -60,11 +59,14 @@ interface Projet42API {
     suspend fun getEvents(
     ): Response<List<EventResponse>>
 
-    // getEventDetail
     @GET("/evenements/{id}")
     suspend fun getEventDetail(
         @Path("id") id: String
-    ): Response<EventDetailResponse>
+    ): Response<EventResponse>
+
+    @GET("/evenements/newEvent")
+    suspend fun getNewEvents(
+    ): Response<List<EventResponse>>
 
 
 }
