@@ -10,6 +10,8 @@ package com.technobrain.projet42.domain.model
   "ville": "string",
   "distance": 0,
   "parcoursJSON": "string",
+  "denivele": 0,
+  "heure": "string",
   "sports": [
     {
       "id": 0,
@@ -29,4 +31,6 @@ data class EventDetail(
     val location: String,
     val distance: Int,
     val parcoursJSON: String,
+    val denivele: Int,
+    val heure: String,
 )

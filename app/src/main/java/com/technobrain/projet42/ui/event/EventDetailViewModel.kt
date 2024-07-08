@@ -13,10 +13,8 @@ class EventDetailViewModel(application: Application) : AndroidViewModel(applicat
     private val apiRepository: ApiRepository = Projet42Repository(application)
 
     private val _uiState = MutableStateFlow<EventDetailState>(EventDetailState.Loading)
-    private val _parcoursJSON = MutableStateFlow<String>("")  // Add this line
 
     val uiState: MutableStateFlow<EventDetailState> get() = _uiState
-    val parcoursJSON: MutableStateFlow<String> get() = _parcoursJSON  // Add this line
 
     fun getEventDetail(eventId: String) {
         viewModelScope.launch {
@@ -28,7 +26,6 @@ class EventDetailViewModel(application: Application) : AndroidViewModel(applicat
                 _uiState.update {
                     EventDetailState.Loaded(event)
                 }
-                _parcoursJSON.value = event.parcoursJSON  // Add this line
             }.onFailure { error ->
                 _uiState.update {
                     EventDetailState.Error(error.message ?: "An error occurred")

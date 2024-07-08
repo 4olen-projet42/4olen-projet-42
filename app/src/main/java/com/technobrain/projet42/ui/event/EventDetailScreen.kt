@@ -1,21 +1,26 @@
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.technobrain.projet42.ui.component.OsmMap
@@ -39,113 +45,115 @@ fun EventDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     val viewModel: EventDetailViewModel = viewModel()
-
     val viewModelState by viewModel.uiState.collectAsState()
-    // val parcoursJSON by viewModel.parcoursJSON.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getEventDetail(eventId)
     }
+
     when (val state = viewModelState) {
         is EventDetailState.Loaded -> {
             val event = state.event
             Scaffold(
-
                 topBar = {
                     TopAppBar(
-                        title = { Text(event.nom) },
+                        title = { Text(event.nom, color = Color.White) },
                         navigationIcon = {
                             IconButton(onClick = { navController.navigate("eventScreen") }) {
-                                Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                                Icon(Icons.Filled.ArrowBack, contentDescription = "Retour", tint = Color.White)
                             }
                         },
+                        colors = TopAppBarDefaults.smallTopAppBarColors(
+                            containerColor = Color(
+                                0xFF42A7F5
+                            )
+                        )
                     )
-                }
-            ) { innerPadding ->
+                }) { innerPadding ->
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(innerPadding),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                        .padding(innerPadding)
+                        .background(Color.White),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-
+                    OsmMap(
+                        parcoursJSON = event.parcoursJSON,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color(0xFFE0F7FA))
+                            .padding(18.dp)
+                    )
 
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(250.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        OsmMap(event.parcoursJSON)
-                    }
+                            .fillMaxHeight()
+                            .background(Color.White),
 
-                    Card(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
+                        ) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(18.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
+
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                if (event.distance != 0) {
-                                    Text(event.distance.toString(), fontWeight = FontWeight.Bold)
-                                    Text("Distance")
+                                Column {
+                                    Text("Date", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                                    // format the date
+                                    val date = event.date.split("-")
+                                    Text("${date[2]}/${date[1]}/${date[0]}", fontSize = 18.sp)
+                                }
+                                Column {
+                                    Text("Heure de début", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                                    Text(event.heure, fontSize = 18.sp)
                                 }
                             }
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text("1h 30min", fontWeight = FontWeight.Bold)
-                                Text("temps")
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            if (event.distance > 0) {
+                                Row {
+
+                                    Text("Distance : ", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                                    Text(
+                                        text = event.distance.toString() + " km",
+                                        fontSize = 18.sp
+                                    )
+                                }
                             }
-                            Row(
+                            if (event.denivele > 0) {
+                                Row {
+                                    Text("Dénivelé : ", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                                    Text(
+                                        text = event.denivele.toString() + " m",
+                                        fontSize = 18.sp
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(18.dp))
+
+                            Button(
+                                onClick = { /* TODO: Handle register action */ },
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                shape = RoundedCornerShape(50),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(
+                                        0xFF42A7F5
+                                    )
+                                )
                             ) {
-                                Text("1240 m", fontWeight = FontWeight.Bold)
-                                Text("Dénivelé")
+                                Text("S'INSCRIRE", color = Color.White)
                             }
                         }
-                    }
-
-                    // Date and Time
-                    Card(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Column {
-                                Text("Heure de départ", fontWeight = FontWeight.Bold)
-                                Text("11 h 00")
-                            }
-                            Column {
-                                Text("Date", fontWeight = FontWeight.Bold)
-                                Text("08/04/2024")
-                            }
-                        }
-                    }
-
-                    // Register Button
-                    Button(
-                        onClick = { /* Handle register action */ },
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text("S'INSCRIRE", color = Color.White)
                     }
                 }
-
-
             }
         }
 

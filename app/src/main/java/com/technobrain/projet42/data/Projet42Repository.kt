@@ -289,7 +289,9 @@ class Projet42Repository(context:Context): ApiRepository {
                         eventResponse.date,
                         eventResponse.location,
                         eventResponse.distance,
-                        eventResponse.parcoursJSON
+                        eventResponse.parcoursJSON,
+                        eventResponse.denivele,
+                        eventResponse.heure
                     )
                     Result.success(eventDetail)
                 } else {

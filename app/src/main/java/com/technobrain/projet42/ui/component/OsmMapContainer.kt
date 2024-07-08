@@ -1,11 +1,13 @@
 package com.technobrain.projet42.ui.component
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.technobrain.projet42.R
 import org.json.JSONObject
@@ -34,7 +36,7 @@ fun OsmMap(
     val geoJson = parcoursJSON
 
     AndroidView(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxWidth().height(400.dp),
         factory = { mapView },
         update = {
             it.setTileSource(TileSourceFactory.MAPNIK)
@@ -45,7 +47,6 @@ fun OsmMap(
 
             val geoPoints = ArrayList<GeoPoint>()
 
-            // Mock parsing of the GeoJson
             val features = JSONObject(geoJson).getJSONArray("features")
             for (i in 0 until features.length()) {
                 val feature = features.getJSONObject(i)

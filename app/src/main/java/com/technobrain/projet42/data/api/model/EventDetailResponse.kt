@@ -18,5 +18,9 @@ data class EventDetailResponse (
     @SerializedName("distance")
     val distance: Int,
     @SerializedName("parcoursJSON")
-    val parcoursJSON: String
+    val parcoursJSON: String,
+    @SerializedName("denivele")
+    val denivele: Int,
+    @SerializedName("heureDebut")
+    val heure: String
 )
