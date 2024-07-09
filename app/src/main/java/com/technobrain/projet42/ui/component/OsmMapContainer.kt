@@ -36,7 +36,7 @@ fun OsmMap(
     val geoJson = parcoursJSON
 
     AndroidView(
-        modifier = modifier.fillMaxWidth().height(300.dp),
+        modifier = modifier.fillMaxWidth().height(350.dp),
         factory = { mapView },
         update = {
             it.setTileSource(TileSourceFactory.MAPNIK)
