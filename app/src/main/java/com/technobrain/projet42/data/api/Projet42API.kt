@@ -2,6 +2,7 @@ package com.technobrain.projet42.data.api;
 
 import com.technobrain.projet42.data.api.model.DocumentResponse
 import com.technobrain.projet42.data.api.model.EventResponse
+import com.technobrain.projet42.data.api.model.StatsResponse
 import com.technobrain.projet42.data.api.model.UserResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -16,7 +17,7 @@ import retrofit2.http.Path
 
 interface Projet42API {
 
-    @GET("/api/utilisateurs/infos")
+    @GET("/api/utilisateurs/me")
     suspend fun userInfos(
         @Header("Authorization") token: String,
     ): Response<UserResponse>
@@ -28,21 +29,34 @@ interface Projet42API {
         @Header("Authorization") token: String
     ): Response<ResponseBody>
 
-    @GET("/api/documents/list")
+    @GET("/api/documents")
     suspend fun getDocuments(
         @Header("Authorization") token: String,
     ): Response<List<DocumentResponse>>
 
-    @DELETE("/api/documents/delete/{id}")
+    @DELETE("/api/documents/{id}")
     suspend fun deleteDocument(
         @Header("Authorization") token: String,
         @Path("id") documentId: String
     ): Response<ResponseBody>
 
-    @GET("/evenements/api/byUser")
+    @GET("/api/evenements/byUser")
     suspend fun userEvents(
         @Header("Authorization") token: String,
     ): Response<List<EventResponse>>
 
+    @GET("/api/evenements/statsByUser")
+    suspend fun userStats(
+        @Header("Authorization") token: String,
+    ): Response<StatsResponse>
+
+    @GET("/evenements/like/{search}")
+    suspend fun searchEvent(
+        @Path("search") search: String
+    ): Response<List<EventResponse>>
+
+    @GET("/evenements/allAvailable")
+    suspend fun getEvents(
+    ): Response<List<EventResponse>>
 
 }

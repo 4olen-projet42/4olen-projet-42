@@ -26,7 +26,6 @@ import com.technobrain.projet42.domain.model.UserShort
 
 @Composable
 fun UserInfo(
-    navController: NavHostController,
     userShort: UserShort,
     statShort: StatShort,
     modifier: Modifier = Modifier,
@@ -63,25 +62,7 @@ fun UserInfo(
                 style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold
             )
             Text(
-                text = statShort.distanceTotale.toString() + " km",
-                style = MaterialTheme.typography.headlineSmall
-            )
-        }
-        HorizontalDivider(
-            thickness = 10.dp,
-            color = Color.Transparent
-        )
-        Row(
-            modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            Spacer(modifier = modifier.size(10.dp))
-            Text(
-                text = "Temps total : ",
-                style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = statShort.tempsTotal.toString() + " h",
+                text = statShort.distanceTotale + " km",
                 style = MaterialTheme.typography.headlineSmall
             )
         }
@@ -99,37 +80,9 @@ fun UserInfo(
                 style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold
             )
             Text(
-                text = statShort.nbParticipation.toString(),
+                text = statShort.nbParticipation,
                 style = MaterialTheme.typography.headlineSmall
             )
-        }
-        HorizontalDivider(
-            thickness = 10.dp,
-            color = Color.Transparent
-        )
-        Row(
-            modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            Spacer(modifier = modifier.size(10.dp))
-            Text(
-                text = "Classement moyen : ",
-                style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = statShort.classementMoyen.toString(),
-                style = MaterialTheme.typography.headlineSmall
-            )
-        }
-        Spacer(modifier.size(10.dp))
-        Button(
-            onClick = {
-                navController.navigate("documentScreen")
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors( Color(0xFF1B85F3)),
-        ){
-            Text(text = "Mes documents")
         }
     }
 }
@@ -145,11 +98,9 @@ fun UserInfoPreview() {
             photoUrl = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
         )
         val stat = StatShort(
-            distanceTotale = 100.0,
-            tempsTotal = 10.0,
-            nbParticipation = 5,
-            classementMoyen = 3.0
+            distanceTotale = "100.0",
+            nbParticipation = "5",
         )
-        UserInfo(navController = rememberNavController(), user, stat)
+        UserInfo(user, stat)
     }
 }

@@ -1,11 +1,11 @@
 package com.technobrain.projet42.ui.user
 
+import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -34,10 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -45,18 +43,18 @@ import coil.compose.AsyncImage
 import com.technobrain.projet42.R
 import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.ui.component.UserInfo
-import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.ui.component.UserListEvent
+import com.technobrain.projet42.ui.document.DocumentScreen
 
 @Composable
 fun UserAccountScreen(
-    stat: StatShort,
     navController: NavHostController,
     sessionManager: SessionManager,
+    context: Context,
     modifier: Modifier = Modifier,
 ) {
     var selectedTab by remember { mutableStateOf(0) }
-    val tabTitles = listOf("Informations", "Evènements")
+    val tabTitles = listOf("Infos", "Events", "Docs")
 
     val viewModel: UserAccountViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
@@ -77,6 +75,7 @@ fun UserAccountScreen(
         is UserAccountState.Loaded -> {
             val user = (uiState as UserAccountState.Loaded).userShort
             val events = (uiState as UserAccountState.Loaded).events
+            val stat = (uiState as UserAccountState.Loaded).statShort
             Column(modifier = modifier.fillMaxSize()) {
                 Box(
                     modifier = modifier
@@ -171,8 +170,9 @@ fun UserAccountScreen(
                         .background( Color.White )
                     ) {
                         when (selectedTab) {
-                            0 -> UserInfo(navController, user, stat)
+                            0 -> UserInfo(user, stat)
                             1 -> UserListEvent(events, navController)
+                            2 -> DocumentScreen(context)
                         }
                     }
                 }
