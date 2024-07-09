@@ -43,7 +43,6 @@ import coil.compose.AsyncImage
 import com.technobrain.projet42.R
 import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.ui.component.UserInfo
-import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.ui.component.UserListEvent
 import com.technobrain.projet42.ui.document.DocumentScreen
 

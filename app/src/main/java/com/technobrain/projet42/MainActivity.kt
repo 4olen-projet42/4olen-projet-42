@@ -15,7 +15,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.domain.model.EventShort
-import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.ui.document.DocumentScreen
 import com.technobrain.projet42.ui.home.EventScreen
 import com.technobrain.projet42.ui.event.MyMapPage
