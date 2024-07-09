@@ -5,23 +5,26 @@ import android.content.Context;
 import com.technobrain.projet42.R
 import com.technobrain.projet42.data.api.KeycloakAPI
 import com.technobrain.projet42.data.api.Projet42API
-import com.technobrain.projet42.data.api.SessionManager;
+import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.data.api.model.DocumentResponse
+import com.technobrain.projet42.data.api.model.EventResponse
+import com.technobrain.projet42.data.api.model.SportResponse
+import com.technobrain.projet42.data.api.model.StatsResponse
 import com.technobrain.projet42.data.api.model.UserResponse
 import com.technobrain.projet42.domain.model.DocumentShort
-import com.technobrain.projet42.data.api.model.EventResponse
-import com.technobrain.projet42.data.api.model.StatsResponse
+import com.technobrain.projet42.domain.model.EventDetail
 import com.technobrain.projet42.domain.model.EventShort
+import com.technobrain.projet42.domain.model.Sport
 import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.domain.model.UserShort
 import com.technobrain.projet42.domain.repositories.ApiRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.OkHttpClient;
+import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.InputStream
 import java.security.KeyStore
@@ -32,7 +35,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
-private const val BASE_URL = "http://90.119.233.2:4433/" //A CHANGER EN FONCTION DE SON ENV
+private const val BASE_URL = "http://192.168.1.30:8080/" //A CHANGER EN FONCTION DE SON ENV
 
 class Projet42Repository(context:Context): ApiRepository {
 
@@ -272,6 +275,46 @@ class Projet42Repository(context:Context): ApiRepository {
             Result.failure(e)
         }
     }
+
+    override suspend fun getNewEvents(): Result<List<EventShort>> {
+        return try {
+            val response = api.getNewEvents()
+
+            if (response.isSuccessful) {
+                val eventResponse = response.body()
+                if (eventResponse != null) {
+                    val eventShortList = eventResponse.map { it.toEventShort() }
+                    Result.success(eventShortList)
+                } else {
+                    Result.failure(Exception("Event not found"))
+                }
+            } else {
+                Result.failure(Exception("Event not found"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getEventDetail(eventId: String): Result<EventDetail> {
+        return try {
+            val response = api.getEventDetail(eventId)
+
+            if (response.isSuccessful) {
+                val eventResponse = response.body()
+                if (eventResponse != null) {
+                    val eventDetail = eventResponse.toEventDetail()
+                    Result.success(eventDetail)
+                } else {
+                    Result.failure(Exception("Event not found"))
+                }
+            } else {
+                Result.failure(Exception("Event not found"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }
 
 private fun UserResponse.toUserShort() =
@@ -295,7 +338,29 @@ private fun EventResponse.toEventShort() =
         this.name,
         this.date,
         this.location,
-        this.distance.toString()
+        this.distance.toString(),
+        this.image
+    )
+
+private fun EventResponse.toEventDetail() =
+    EventDetail(
+        this.id.toString(),
+        name,
+        image,
+        maxParticipants,
+        date,
+        location,
+        distance,
+        parcoursJSON,
+        denivele,
+        heure,
+        sports.map { it.toSport().nom }
+    )
+
+private fun SportResponse.toSport() =
+    Sport(
+        id.toString(),
+        nom
     )
 
 private fun StatsResponse.toStatShort() =

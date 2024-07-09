@@ -1,10 +1,10 @@
 package com.technobrain.projet42.domain.repositories;
 
 import com.technobrain.projet42.domain.model.DocumentShort
+import com.technobrain.projet42.domain.model.EventDetail
 import com.technobrain.projet42.domain.model.EventShort
 import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.domain.model.UserShort
-import java.io.File
 
 interface ApiRepository {
 
@@ -23,5 +23,9 @@ interface ApiRepository {
     suspend fun searchEvent(search: String): Result<List<EventShort>>
 
     suspend fun getEvents(): Result<List<EventShort>>
+
+    suspend fun getEventDetail(eventId: String): Result<EventDetail>
+
+    suspend fun getNewEvents(): Result<List<EventShort>>
 
 }

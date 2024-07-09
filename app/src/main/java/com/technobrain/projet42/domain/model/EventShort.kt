@@ -5,5 +5,6 @@ data class EventShort (
     val name: String,
     val date: String,
     val location: String,
-    val distance: String
+    val distance: String,
+    val image: String
 )

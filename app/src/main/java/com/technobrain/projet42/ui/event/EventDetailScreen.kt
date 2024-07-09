@@ -1,146 +1,227 @@
-
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.technobrain.projet42.domain.model.EventShort
+import com.technobrain.projet42.ui.component.OsmMap
+import com.technobrain.projet42.ui.event.EventDetailState
+import com.technobrain.projet42.ui.event.EventDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventDetailScreen(
-    event: EventShort,
+    eventId: String,
     navController: NavHostController,
-    modifier: Modifier = Modifier
-
+    modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Course à pied") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.navigate("eventScreen") }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-            )
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            // Map
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(
-                    onClick = { navController.navigate("mapScreen") },
-                    modifier = Modifier
-                ) {
-                    Text("Voir le parcours", color = Color.White)
-                }
-            }
+    val viewModel: EventDetailViewModel = viewModel()
+    val viewModelState by viewModel.uiState.collectAsState()
 
-            // Details
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
+    LaunchedEffect(Unit) {
+        viewModel.getEventDetail(eventId)
+    }
+
+    when (val state = viewModelState) {
+        is EventDetailState.Loaded -> {
+            val event = state.event
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = { Text(event.nom, color = Color.White) },
+                        navigationIcon = {
+                            IconButton(onClick = { navController.navigate("eventScreen") }) {
+                                Icon(
+                                    Icons.Filled.ArrowBack,
+                                    contentDescription = "Retour",
+                                    tint = Color.White
+                                )
+                            }
+                        },
+                        colors = TopAppBarDefaults.smallTopAppBarColors(
+                            containerColor = Color(
+                                0xFF42A7F5
+                            )
+                        )
+                    )
+                }) { innerPadding ->
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .background(Color.White),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("15km", fontWeight = FontWeight.Bold)
-                        Text("distance")
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("1h 30min", fontWeight = FontWeight.Bold)
-                        Text("temps")
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("1240 m", fontWeight = FontWeight.Bold)
-                        Text("Dénivelé")
+                    OsmMap(
+                        parcoursJSON = event.parcoursJSON,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color(0xFFE0F7FA))
+                            .padding(18.dp)
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .background(Color.White),
+
+                        ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(18.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column {
+                                    Text("Date", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                                    // format the date
+                                    val date = event.date.split("-")
+                                    Text("${date[2]}/${date[1]}/${date[0]}", fontSize = 18.sp)
+                                }
+                                Column {
+                                    Text(
+                                        "Heure de début",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp
+                                    )
+                                    Text(event.heure, fontSize = 18.sp)
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            if (event.sports.isNotEmpty()) {
+                                Row {
+                                    Text("Sport : ", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                                    for (sport in event.sports) {
+                                        Text(
+                                            text = sport + ", ",
+                                            fontSize = 18.sp
+                                        )
+                                    }
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            if (event.distance > 0) {
+                                Row {
+
+                                    Text(
+                                        "Distance : ",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp
+                                    )
+                                    Text(
+                                        text = event.distance.toString() + " km",
+                                        fontSize = 18.sp
+                                    )
+                                }
+                            }
+                            if (event.denivele > 0) {
+                                Row {
+                                    Text(
+                                        "Dénivelé : ",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp
+                                    )
+                                    Text(
+                                        text = event.denivele.toString() + " m",
+                                        fontSize = 18.sp
+                                    )
+                                }
+                            }
+
+
+                            Spacer(modifier = Modifier.height(18.dp))
+
+                            Button(
+                                onClick = { /* TODO: Handle register action */ },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(50),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(
+                                        0xFF42A7F5
+                                    )
+                                )
+                            ) {
+                                Text("S'INSCRIRE", color = Color.White)
+                            }
+                        }
                     }
                 }
             }
+        }
 
-            // Date and Time
-            Card(
-                modifier = Modifier.fillMaxWidth()
+        EventDetailState.Empty -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column {
-                        Text("Heure de départ", fontWeight = FontWeight.Bold)
-                        Text("11 h 00")
-                    }
-                    Column {
-                        Text("Date", fontWeight = FontWeight.Bold)
-                        Text("08/04/2024")
-                    }
-                }
+                Text(
+                    text = "no result"
+                )
             }
+        }
 
-            // Register Button
-            Button(
-                onClick = { /* Handle register action */ },
-                modifier = Modifier.fillMaxWidth(),
+        is EventDetailState.Error -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("S'INSCRIRE", color = Color.White)
+                Text(
+                    text = state.message
+                )
+            }
+        }
+
+        EventDetailState.Loading -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Loading..."
+                )
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    EventDetailScreen(
-        event = EventShort("1", "Marathon", "Lun, 03 Juin", "Lyon", "15km"),
-        navController = NavHostController(LocalContext.current)
-    )
 }

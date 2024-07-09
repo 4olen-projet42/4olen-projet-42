@@ -8,7 +8,7 @@ data class EventResponse (
     @SerializedName("nom")
     val name: String,
     @SerializedName("image")
-    val photo: String,
+    val image: String,
     @SerializedName("maxParticipants")
     val maxParticipants: Int,
     @SerializedName("dateDebut")
@@ -18,5 +18,10 @@ data class EventResponse (
     @SerializedName("distance")
     val distance: Int,
     @SerializedName("parcoursJSON")
-    val parcours: String
+    val parcoursJSON: String,
+    @SerializedName("denivele")
+    val denivele: Int,
+    @SerializedName("heureDebut")
+    val heure: String,
+    val sports: List<SportResponse>,
 )

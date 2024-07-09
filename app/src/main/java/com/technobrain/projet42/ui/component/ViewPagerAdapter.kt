@@ -3,10 +3,15 @@ package com.technobrain.projet42.ui.component
 import android.content.Context
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.technobrain.projet42.domain.model.EventShort
 
-class EventPagerAdapter(private val events: List<EventShort>, private val context: Context) : RecyclerView.Adapter<EventPagerAdapter.EventViewHolder>() {
+class EventPagerAdapter(
+    private val events: List<EventShort>,
+    private val context: Context,
+    private val navController: NavController
+) : RecyclerView.Adapter<EventPagerAdapter.EventViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val composeView = ComposeView(context).apply {
@@ -20,7 +25,9 @@ class EventPagerAdapter(private val events: List<EventShort>, private val contex
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         holder.composeView.setContent {
-            EventCard(event = events[position])
+            EventCard(event = events[position]
+            ) { navController.navigate("eventDetail/${events[position].id}") }
+
         }
     }
 

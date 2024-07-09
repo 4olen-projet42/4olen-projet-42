@@ -59,4 +59,14 @@ interface Projet42API {
     suspend fun getEvents(
     ): Response<List<EventResponse>>
 
+    @GET("/evenements/{id}")
+    suspend fun getEventDetail(
+        @Path("id") id: String
+    ): Response<EventResponse>
+
+    @GET("/evenements/newEvent")
+    suspend fun getNewEvents(
+    ): Response<List<EventResponse>>
+
+
 }

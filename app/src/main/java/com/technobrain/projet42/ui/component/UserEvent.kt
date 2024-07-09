@@ -59,7 +59,8 @@ fun UserEventPreview() {
             name = "Evenement 1",
             date = "Lundi 01 janvier",
             location = "Lyon",
-            distance = "10 km"
+            distance = "10 km",
+            image = "https://picsum.photos/200/300"
         )
         UserEvent(event)
     }
