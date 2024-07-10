@@ -11,4 +11,7 @@ sealed class EventDetailState {
     data class Loaded(val event: EventDetail) : EventDetailState()
 
     data class Error(val message: String) : EventDetailState()
+
+    data object InscriptionCreated : EventDetailState()
+
 }
