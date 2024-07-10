@@ -18,14 +18,15 @@ class HomeEventViewModel(application: Application) : AndroidViewModel(applicatio
     private val _allEventsState = MutableStateFlow<HomeEventState>(HomeEventState.Loading)
     val allEventsState: StateFlow<HomeEventState> get() = _allEventsState.asStateFlow()
 
-    private val _newEventsState = MutableStateFlow<HomeEventState>(HomeEventState.Loading)
-    val newEventsState: StateFlow<HomeEventState> get() = _newEventsState.asStateFlow()
-
     fun searchEvent(text: String) {
         viewModelScope.launch {
             _allEventsState.update { HomeEventState.Loading }
             apiRepository.searchEvent(text).onSuccess { event ->
-                _allEventsState.update { HomeEventState.Loaded(event) }
+                apiRepository.getNewEvents().onSuccess { newEvents ->
+                    _allEventsState.update { HomeEventState.Loaded(event, newEvents) }
+                }.onFailure { error ->
+                    _allEventsState.update { HomeEventState.Error(error.message ?: "An error occurred") }
+                }
             }.onFailure { error ->
                 _allEventsState.update { HomeEventState.Error(error.message ?: "An error occurred") }
             }
@@ -36,21 +37,15 @@ class HomeEventViewModel(application: Application) : AndroidViewModel(applicatio
         viewModelScope.launch {
             _allEventsState.update { HomeEventState.Loading }
             apiRepository.getEvents().onSuccess { events ->
-                _allEventsState.update { HomeEventState.Loaded(events) }
+                apiRepository.getNewEvents().onSuccess { newEvents ->
+                        _allEventsState.update { HomeEventState.Loaded(events, newEvents) }
+                    }.onFailure { error ->
+                        _allEventsState.update { HomeEventState.Error(error.message ?: "An error occurred") }
+                    }
             }.onFailure { error ->
                 _allEventsState.update { HomeEventState.Error(error.message ?: "An error occurred") }
             }
         }
     }
 
-    fun getNewEvents() {
-        viewModelScope.launch {
-            _newEventsState.update { HomeEventState.Loading }
-            apiRepository.getNewEvents().onSuccess { events ->
-                _newEventsState.update { HomeEventState.Loaded(events) }
-            }.onFailure { error ->
-                _newEventsState.update { HomeEventState.Error(error.message ?: "An error occurred") }
-            }
-        }
-    }
 }

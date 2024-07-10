@@ -9,6 +9,6 @@ sealed class HomeEventState {
 
     data object Loading : HomeEventState()
 
-    data class Loaded(val events: List<EventShort>) : HomeEventState()
+    data class Loaded(val events: List<EventShort>, val newEvents: List<EventShort>) : HomeEventState()
     data class Error(val message: String) : HomeEventState()
 }

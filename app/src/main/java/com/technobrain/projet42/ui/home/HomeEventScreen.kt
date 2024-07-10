@@ -43,13 +43,12 @@ fun EventScreen(
     val viewModel: HomeEventViewModel = viewModel()
 
     // Collect states for new events and all events
-    val newEventsState by viewModel.newEventsState.collectAsState()
+    //val newEventsState by viewModel.newEventsState.collectAsState()
     val allEventsState by viewModel.allEventsState.collectAsState()
 
     // Initialize both states
     LaunchedEffect(Unit) {
         viewModel.getEvents()
-        viewModel.getNewEvents()
     }
 
     Scaffold(topBar = {
@@ -81,18 +80,13 @@ fun EventScreen(
 
             SearchBar(onSearchClick = { viewModel.searchEvent(it) })
             Spacer(modifier = Modifier.padding(8.dp))
-            // Carousel for new events
-            when (val state = newEventsState) {
-                is HomeEventState.Loading -> CircularProgressIndicator()
-                is HomeEventState.Loaded -> CarouselView(events = state.events, context = LocalContext.current, navController = navController)
-                is HomeEventState.Error -> Text(text = state.message)
-                HomeEventState.Empty -> Text(text = "No new events")
-            }
 
-            // Event list for all events
             when (val state = allEventsState) {
                 is HomeEventState.Loading -> CircularProgressIndicator()
-                is HomeEventState.Loaded -> EventsList(events = state.events, navController = navController)
+                is HomeEventState.Loaded -> {
+                    CarouselView(events = state.newEvents, context = LocalContext.current, navController = navController)
+                    EventsList(events = state.events, navController = navController)
+                }
                 is HomeEventState.Error -> Text(text = state.message)
                 HomeEventState.Empty -> Text(text = "No events available")
             }
