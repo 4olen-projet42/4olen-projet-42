@@ -171,18 +171,17 @@ fun EventDetailScreen(
                             Spacer(modifier = Modifier.height(18.dp))
 
                             Button(
-                                onClick = { /* TODO: Handle register action */ },
+                                onClick = { viewModel.createInscription(event) },
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(50),
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(
-                                        0xFF42A7F5
-                                    )
+                                    containerColor = Color(0xFF42A7F5)
                                 )
                             ) {
                                 Text("S'INSCRIRE", color = Color.White)
                             }
                         }
+
                     }
                 }
             }
@@ -220,6 +219,18 @@ fun EventDetailScreen(
             ) {
                 Text(
                     text = "Loading..."
+                )
+            }
+        }
+
+        is EventDetailState.InscriptionCreated -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Inscription réussie !"
                 )
             }
         }

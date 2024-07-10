@@ -3,6 +3,7 @@ package com.technobrain.projet42.domain.repositories;
 import com.technobrain.projet42.domain.model.DocumentShort
 import com.technobrain.projet42.domain.model.EventDetail
 import com.technobrain.projet42.domain.model.EventShort
+import com.technobrain.projet42.domain.model.Inscription
 import com.technobrain.projet42.domain.model.StatShort
 import com.technobrain.projet42.domain.model.UserShort
 
@@ -28,4 +29,5 @@ interface ApiRepository {
 
     suspend fun getNewEvents(): Result<List<EventShort>>
 
+    suspend fun createOrUpdateInscription(inscription: Inscription): Result<Inscription>
 }

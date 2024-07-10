@@ -1,7 +1,6 @@
 package com.technobrain.projet42.data
 
 import android.content.Context
-import com.technobrain.projet42.R
 import com.technobrain.projet42.data.api.KeycloakAPI
 import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.data.api.model.KeycloakCredential
@@ -11,21 +10,13 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.InputStream
-import java.security.KeyStore
-import java.security.cert.CertificateFactory
-import java.security.cert.X509Certificate
 import java.util.Objects
-import javax.net.ssl.HostnameVerifier
-import javax.net.ssl.SSLContext
-import javax.net.ssl.SSLSocketFactory
-import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
 
 
-private const val BASE_URL = "https://keycloak.doubli.fr:8443/" //A CHANGER EN FONCTION DE SON ENV
+
+private const val BASE_URL = "http://192.168.1.46:8090/" //A CHANGER EN FONCTION DE SON ENV
 private const val CLIENT_ID = "projet42-api"
-private const val CLIENT_SECRET = "b2CsfxhZVVzLqpy8GRigLI5TgWI4YzU0" //A CHANGER EN FONCTION DE SON ENV
+private const val CLIENT_SECRET = "XCRESxuzkBkd2vWn3ZR5Q2OMib36I8jB" //A CHANGER EN FONCTION DE SON ENV
 private const val USER_NAME_ADMIN = "admin"
 private const val PASSWORD_ADMIN = "Password123!"
 
@@ -37,62 +28,18 @@ class KeycloakRepository(context: Context) : LoginRepository {
     private val sessionManager: SessionManager = SessionManager(context)
 
     init {
-        val retrofit = createRetrofit(context)
-        api = retrofit.create(KeycloakAPI::class.java)
-    }
+        val logging = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
 
-    fun getCustomOkHttpClient(context: Context): OkHttpClient {
-        try {
-            // Charger le certificat CA depuis le fichier raw
-            val certificateFactory = CertificateFactory.getInstance("X.509")
-            val caInputStream: InputStream = context.resources.openRawResource(R.raw.server)
-            val ca: X509Certificate = certificateFactory.generateCertificate(caInputStream) as X509Certificate
-            caInputStream.close()
+        val okhttpClient = OkHttpClient.Builder()
+            .addInterceptor(logging)  // ajout des logs sur les requêtes
+            .build()
 
-            // Créer un keystore contenant le certificat CA
-            val keyStoreType = KeyStore.getDefaultType()
-            val keyStore = KeyStore.getInstance(keyStoreType).apply {
-                load(null, null)
-                setCertificateEntry("ca", ca)
-            }
-
-            // Créer un TrustManager qui utilise le keystore CA
-            val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-            trustManagerFactory.init(keyStore)
-            val trustManagers = trustManagerFactory.trustManagers
-
-            // Créer un SSLContext utilisant les TrustManagers CA
-            val sslContext = SSLContext.getInstance("TLS")
-            sslContext.init(null, trustManagers, java.security.SecureRandom())
-
-            val sslSocketFactory = sslContext.socketFactory
-
-            // Créer un OkHttpClient qui utilise ce SSLContext
-            val logging = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
-
-            // Ajout du HostnameVerifier pour accepter tous les noms d'hôtes
-            val hostnameVerifier = HostnameVerifier { _, _ -> true }
-
-            return OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory, trustManagerFactory.trustManagers[0] as X509TrustManager)
-                .hostnameVerifier(hostnameVerifier)
-                .addInterceptor(logging)
-                .build()
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw RuntimeException(e)
-        }
-    }
-
-    fun createRetrofit(context: Context): Retrofit {
-        val okhttpClient = getCustomOkHttpClient(context)
-
-        return Retrofit.Builder()
+        val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okhttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+        api = retrofit.create(KeycloakAPI::class.java)
     }
 
     override suspend fun login(username: String, password: String): Result<String> {
