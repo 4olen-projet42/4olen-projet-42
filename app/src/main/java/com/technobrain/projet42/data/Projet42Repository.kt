@@ -35,7 +35,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
-private const val BASE_URL = "http://192.168.1.46:8080/" //A CHANGER EN FONCTION DE SON ENV
+private const val BASE_URL = "http://90.119.233.2:4433/" //A CHANGER EN FONCTION DE SON ENV
 
 class Projet42Repository(context:Context): ApiRepository {
 
@@ -183,7 +183,7 @@ class Projet42Repository(context:Context): ApiRepository {
                         }"
                     )
                 )
-             }
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -230,7 +230,7 @@ class Projet42Repository(context:Context): ApiRepository {
             } else {
                 Result.failure(Exception("Stats not found"))
             }
-            } catch (e: Exception) {
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }
@@ -276,6 +276,24 @@ class Projet42Repository(context:Context): ApiRepository {
         }
     }
 
+    override suspend fun createOrUpdateInscription(inscription: Inscription): Result<Inscription> {
+        return try {
+            val response = api.createOrUpdateInscription(
+                token = "Bearer "+sessionManager.fetchAccessToken(),
+                inscription = inscription
+            )
+
+            if (response.isSuccessful) {
+                Result.success(inscription)
+            } else {
+                Result.failure(Exception("Vous êtes déjà inscrit à cet événement"))
+
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     override suspend fun getNewEvents(): Result<List<EventShort>> {
         return try {
             val response = api.getNewEvents()
@@ -290,24 +308,6 @@ class Projet42Repository(context:Context): ApiRepository {
                 }
             } else {
                 Result.failure(Exception("Event not found"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun createOrUpdateInscription(inscription: Inscription): Result<Inscription> {
-        return try {
-            val response = api.createOrUpdateInscription(
-                token = "Bearer "+sessionManager.fetchAccessToken(),
-                inscription = inscription
-            )
-
-            if (response.isSuccessful) {
-                Result.success(inscription)
-            } else {
-                Result.failure(Exception("Vous êtes déjà inscrit à cet événement"))
-
             }
         } catch (e: Exception) {
             Result.failure(e)
