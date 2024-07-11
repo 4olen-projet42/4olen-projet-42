@@ -10,6 +10,7 @@ import com.technobrain.projet42.domain.repositories.ApiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class EventDetailViewModel(application: Application) : AndroidViewModel(application) {
     private val apiRepository: ApiRepository = Projet42Repository(application)
@@ -32,7 +33,7 @@ class EventDetailViewModel(application: Application) : AndroidViewModel(applicat
             val heure = event.heure
 
             val inscription = Inscription(
-                1,
+                Random.nextLong(),
                 1,
                 EventDetail(
                     eventId,
