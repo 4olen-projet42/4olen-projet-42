@@ -57,7 +57,7 @@ fun AppNavigator(context: Context) {
         composable("registerScreen") { RegisterScreen(navController) }
         composable("eventDetail/{eventId}") { backStackEntry ->
             val eventId = backStackEntry.arguments?.getString("eventId")
-            EventDetailScreen(eventId!!, navController)
+            EventDetailScreen(eventId!!, navController, sessionManager)
         }
         composable("documentScreen") { DocumentScreen(context) }
     }

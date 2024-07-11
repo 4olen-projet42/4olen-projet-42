@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.technobrain.projet42.data.api.SessionManager
 import com.technobrain.projet42.ui.component.OsmMap
 import com.technobrain.projet42.ui.event.EventDetailState
 import com.technobrain.projet42.ui.event.EventDetailViewModel
@@ -42,6 +43,7 @@ import com.technobrain.projet42.ui.event.EventDetailViewModel
 fun EventDetailScreen(
     eventId: String,
     navController: NavHostController,
+    sessionManager: SessionManager,
     modifier: Modifier = Modifier,
 ) {
     val viewModel: EventDetailViewModel = viewModel()
@@ -125,16 +127,29 @@ fun EventDetailScreen(
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            if (event.sports.isNotEmpty()) {
-                                Row {
-                                    Text("Sport : ", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                                    for (sport in event.sports) {
+                            Row (modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween) {
+
+
+
+                                if (event.sports.isNotEmpty()) {
+                                    Row {
                                         Text(
-                                            text = sport + ", ",
+                                            "Sport : ",
+                                            fontWeight = FontWeight.Bold,
                                             fontSize = 18.sp
                                         )
+                                        for (sport in event.sports) {
+                                            Text(
+                                                text = sport + ", ",
+                                                fontSize = 18.sp
+                                            )
+                                        }
+
                                     }
                                 }
+
+                                Text(event.location, fontSize = 18.sp)
                             }
 
                             Spacer(modifier = Modifier.height(8.dp))
@@ -170,15 +185,17 @@ fun EventDetailScreen(
 
                             Spacer(modifier = Modifier.height(18.dp))
 
-                            Button(
-                                onClick = { viewModel.createInscription(event) },
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(50),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFF42A7F5)
-                                )
-                            ) {
-                                Text("S'INSCRIRE", color = Color.White)
+                            if(sessionManager.isUserLoggedIn()) {
+                                Button(
+                                    onClick = { viewModel.createInscription(event) },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(50),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color(0xFF42A7F5)
+                                    )
+                                ) {
+                                    Text("S'INSCRIRE", color = Color.White)
+                                }
                             }
                         }
 
